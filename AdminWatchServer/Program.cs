@@ -1,4 +1,6 @@
 using AdminWatchServer.Components;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace AdminWatchServer;
@@ -13,7 +15,13 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
-        builder.Services.AddScoped<AdminWatchContext, AdminWatchContext>();
+        var dbFolderPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AdminWatch");
+        var dbFilePath = Path.Join(dbFolderPath, "database.db");
+        
+        builder.Services.AddDbContext<AdminWatchContext>(options =>
+        {
+            options.UseSqlite(new SqliteConnectionStringBuilder{DataSource = dbFilePath, Mode = SqliteOpenMode.ReadWriteCreate}.ToString());
+        });
 
         builder.Services.AddFluentUIComponents();
 
@@ -37,4 +45,5 @@ public class Program
 
         app.Run();
     }
+
 }
