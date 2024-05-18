@@ -1,4 +1,5 @@
 using AdminWatchServer.Components;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace AdminWatchServer;
 
@@ -11,6 +12,8 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
+
+        builder.Services.AddFluentUIComponents();
 
         var app = builder.Build();
 

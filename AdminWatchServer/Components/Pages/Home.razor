@@ -1,7 +1,16 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<p>Current: @_currentCount</p>
+
+<FluentButton @onclick="() => _currentCount++">ClickMe!</FluentButton>
+
+@code {
+
+    private int _currentCount = 0;
+
+}
