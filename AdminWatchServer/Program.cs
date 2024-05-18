@@ -13,6 +13,8 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
+        builder.Services.AddScoped<AdminWatchContext, AdminWatchContext>();
+
         builder.Services.AddFluentUIComponents();
 
         var app = builder.Build();

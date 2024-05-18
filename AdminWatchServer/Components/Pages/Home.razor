@@ -1,16 +1,13 @@
 ﻿@page "/"
+@inject  AdminWatchContext DbContext;
 @rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
-<p>Current: @_currentCount</p>
-
-<FluentButton @onclick="() => _currentCount++">ClickMe!</FluentButton>
+<p>@DbContext.DbPath</p>
 
 @code {
-
-    private int _currentCount = 0;
 
 }
