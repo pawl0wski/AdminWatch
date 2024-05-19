@@ -1,5 +1,6 @@
 using AdminWatchServer.Components;
 using AdminWatchServer.Models;
+using AdminWatchServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,8 @@ public class Program
             options.LogoutPath = "/logout";
             options.LoginPath = "/login";
         });
+
+        builder.Services.AddScoped<IAuthService, AuthService>();
         
         builder.Services
             .AddIdentity<AdminWatchUser, IdentityRole>(options =>

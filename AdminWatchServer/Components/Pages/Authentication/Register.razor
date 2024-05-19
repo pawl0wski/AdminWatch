@@ -1,11 +1,10 @@
 @page "/register"
 @using System.ComponentModel.DataAnnotations
-@using AdminWatchServer.Models
-@using Microsoft.AspNetCore.Components.Authorization
+@using AdminWatchServer.Services
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<AdminWatchUser> SignInManager;
+
+@inject IAuthService AuthService;
 @inject NavigationManager Navigator;
-@inject AuthenticationStateProvider AuthState;
 
 <FluentStack Style="height: 100vh;" Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
     <AdminWatchLogo />
@@ -60,35 +59,7 @@
 </FluentStack>
 
 @code {
-
-    [SupplyParameterFromForm] 
-    private UserRegisterInput? RegisterInput { get; set; } = new(); 
-
-    private IdentityResult _identityResult = new();
-
-    protected override async Task OnInitializedAsync()
-    {
-        var authStatus = await AuthState.GetAuthenticationStateAsync();
-        if (authStatus.User.Identity?.IsAuthenticated ?? false)
-            Navigator.NavigateTo("/");
-    }
-
-    private async Task OnValidFormRegister(EditContext obj)
-    {
-        var user = new AdminWatchUser { UserName = RegisterInput!.Username};
-        _identityResult =
-            await SignInManager.UserManager.CreateAsync(
-                user,
-                RegisterInput.Password!);
-        if (_identityResult.Succeeded)
-        {
-            await SignInManager.UserManager.SetLockoutEnabledAsync(user, false);
-            await SignInManager.SignInAsync(user, isPersistent: false);
-            Navigator.NavigateTo("/");
-        }
-    }
-
-    public class UserRegisterInput
+    private class UserRegisterInput
     {
         [Required(ErrorMessage = "Nazwa użytkownika jest wymagana")]
         public string? Username { get; set; } 
@@ -103,4 +74,27 @@
         public string? PasswordRepeat { get; set; }
     }
 
+    [SupplyParameterFromForm] 
+    private UserRegisterInput? RegisterInput { get; set; } = new(); 
+
+    private IdentityResult _identityResult = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (await AuthService.IsLoggedIn())
+            Navigator.NavigateTo("/");
+    }
+
+    private async Task OnValidFormRegister(EditContext obj)
+    {
+        if (RegisterInput is not null)
+        {
+            _identityResult = await AuthService.Register(
+                RegisterInput.Username!,
+                RegisterInput.Password!);
+            
+            if (_identityResult.Succeeded)
+                Navigator.NavigateTo("/");
+        }
+    }
 }

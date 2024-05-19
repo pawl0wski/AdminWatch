@@ -1,15 +1,12 @@
 @page "/login"
 @using System.ComponentModel.DataAnnotations
-@using AdminWatchServer.Models
-@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Identity
+@using AdminWatchServer.Services
 
-@inject SignInManager<AdminWatchUser> SignInManager
-@inject NavigationManager Navigator;
-@inject AuthenticationStateProvider AuthState;
+@inject IAuthService AuthService
+@inject NavigationManager Navigator
 
 <FluentStack
-    Style="height: 100vh"
+    Style="height: 100vh" 
     Orientation="Orientation.Vertical"
     HorizontalAlignment="HorizontalAlignment.Center"
     VerticalAlignment="VerticalAlignment.Center">
@@ -73,12 +70,11 @@
     [SupplyParameterFromForm]
     private UserLoginInput? LoginInput { get; set; } = new();
 
-    private bool _loginFail = false;
+    private bool _loginFail;
     
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthState.GetAuthenticationStateAsync();
-        if (authState.User.Identity?.IsAuthenticated ?? false)
+        if (await AuthService.IsLoggedIn())
             Navigator.NavigateTo("/");
     }
 
@@ -86,17 +82,13 @@
     {
         if (LoginInput is not null)
         {
-            var result = await SignInManager.PasswordSignInAsync(
+            _loginFail = await AuthService.Login(
                 LoginInput.Username!,
                 LoginInput.Password!,
-                false,
-                false);
+                LoginInput.RememberMe);
 
-            if (!result.Succeeded)
-            {
-                _loginFail = true;
+            if (_loginFail)
                 return;
-            }
         
             Navigator.NavigateTo("/");
         }
