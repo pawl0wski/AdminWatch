@@ -1,0 +1,12 @@
+<div class="app_header">
+    <FluentIcon Value="@(new Icons.Regular.Size32.Eye())" Title="AdminWatch"/>
+    <h4 class="title">AdminWatch</h4>
+    @ChildContent
+</div>
+
+@code {
+
+    [Parameter] 
+    public required RenderFragment ChildContent { get; set; }
+
+}

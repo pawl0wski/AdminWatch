@@ -1,0 +1,22 @@
+<div class="adminwatch_nav">
+    <FluentAppBar Style="height: 100%">
+        <FluentAppBarItem
+            Match="NavLinkMatch.All"
+            Href="/dashboard"
+            IconRest="@(new Icons.Regular.Size24.Desktop())"
+            IconActive="@(new Icons.Filled.Size24.Desktop())"
+            Text="Urządzenia"/>
+        <FluentAppBarItem
+            Match="NavLinkMatch.All"
+            Href="/dashboard/users"
+            IconRest="@(new Icons.Regular.Size24.Person())"
+            IconActive="@(new Icons.Filled.Size24.Person())"
+            Text="Użytkownicy"/>
+        <FluentDivider Style="height: 100%"/>
+        <FluentAppBarItem
+            Href="/logout"
+            IconRest="@(new Icons.Regular.Size24.SignOut())"
+            IconActive="@(new Icons.Filled.Size24.SignOut())"
+            Text="Wyloguj się"/>
+    </FluentAppBar>
+</div>
