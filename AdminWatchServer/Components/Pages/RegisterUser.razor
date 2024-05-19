@@ -14,7 +14,7 @@
 
             <FluentStack Orientation="Orientation.Vertical">
                 <FluentTextField
-                    Name="username"
+                    Name="RegisterInput.Username"
                     Required="true"
                     Size="30"
                     @bind-Value="RegisterInput.Username"
@@ -22,7 +22,7 @@
                 <FluentValidationMessage For="() => RegisterInput.Username"/>
 
                 <FluentTextField
-                    Name="password"
+                    Name="RegisterInput.Password"
                     Required="true"
                     Size="30"
                     @bind-Value="RegisterInput.Password"
@@ -31,7 +31,7 @@
                 <FluentValidationMessage For="() => RegisterInput.Password"/>
 
                 <FluentTextField
-                    Name="repeat_password"
+                    Name="RegisterInput.PasswordRepeat"
                     Required="true"
                     Size="30"
                     @bind-Value="RegisterInput.PasswordRepeat"
