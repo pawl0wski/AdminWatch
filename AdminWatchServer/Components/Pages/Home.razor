@@ -1,13 +1,59 @@
 ﻿@page "/"
-@inject  AdminWatchContext DbContext;
+@using AdminWatchServer.Services
 @rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+@inject IAuthService AuthService;
+@inject IDialogService DialogService;
+@inject NavigationManager Navigator;
 
-<h1>Hello, world!</h1>
+<PageTitle>AdminWatch</PageTitle>
 
-<p>@DbContext.Model</p>
+<FluentStack 
+    Style="width: 100vw; height: 100vh"
+    Orientation="Orientation.Vertical"
+    HorizontalAlignment="HorizontalAlignment.Center"
+    VerticalAlignment="VerticalAlignment.Center">
+    <FluentProgressRing />
+    <FluentLabel>Ładowanie...</FluentLabel>
+</FluentStack>
+
 
 @code {
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        if (AuthService.IsNoAccounts())
+        {
+            await ShowCreateFirstAccountDialog();
+            return;
+        }
+
+        if (await AuthService.IsLoggedIn())
+            OpenDashboard();
+        
+        OpenLoginPage();
+    }
+
+    private async Task ShowCreateFirstAccountDialog()
+    {
+        var dialog = await DialogService.ShowInfoAsync(
+            "Aby skorzystać z aplikacji AdminWatch musisz stworzyć konto administratora.",
+            "Brak konta administratora");
+        
+        await dialog.Result;
+        Navigator.NavigateTo("/register");
+    }
+    
+    private void OpenDashboard()
+    {
+        Navigator.NavigateTo("/dashboard");
+    }
+    
+    private void OpenLoginPage()
+    {
+        Navigator.NavigateTo("/login");
+    }
 }

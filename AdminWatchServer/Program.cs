@@ -27,6 +27,8 @@ public class Program
             options.UseSqlite(new SqliteConnectionStringBuilder{DataSource = dbFilePath, Mode = SqliteOpenMode.ReadWriteCreate}.ToString());
         });
 
+        builder.Services.AddCascadingAuthenticationState();
+        
         builder.Services.AddAuthentication().AddCookie(options =>
         {
             options.LogoutPath = "/logout";

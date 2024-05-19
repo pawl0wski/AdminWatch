@@ -11,4 +11,6 @@ public interface IAuthService
     public Task<bool> Login(string username, string password, bool isPersistent);
 
     public Task Logout();
+
+    public bool IsNoAccounts();
 }

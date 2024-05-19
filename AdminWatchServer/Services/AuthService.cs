@@ -35,4 +35,9 @@ public class AuthService(SignInManager<AdminWatchUser> signInManager, Authentica
     {
         await signInManager.SignOutAsync();
     }
+
+    public bool IsNoAccounts()
+    {
+        return !signInManager.UserManager.Users.Any();
+    }
 }
