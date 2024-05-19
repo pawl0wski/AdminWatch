@@ -1,0 +1,103 @@
+@page "/register"
+@using System.ComponentModel.DataAnnotations
+@using AdminWatchServer.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AdminWatchUser> SignInManager;
+@inject NavigationManager Navigator;
+
+<FluentStack Style="height: 100vh;" Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
+    <h1>AdminWatch</h1>
+    <FluentCard Width="fit-content" Height="fit-content" MinimalStyle="true">
+        <h3>Rejestracja</h3>
+        <FluentEditForm Model="@RegisterInput" OnValidSubmit="OnValidFormRegister" FormName="UserRegister">
+            <DataAnnotationsValidator/>
+
+            <FluentStack Orientation="Orientation.Vertical">
+                <FluentTextField
+                    Name="username"
+                    Required="true"
+                    Size="30"
+                    @bind-Value="RegisterInput.Username"
+                    Label="Nazwa użytkownika"/>
+                <FluentValidationMessage For="() => RegisterInput.Username"/>
+
+                <FluentTextField
+                    Name="password"
+                    Required="true"
+                    Size="30"
+                    @bind-Value="RegisterInput.Password"
+                    TextFieldType="TextFieldType.Password"
+                    Label="Hasło"/>
+                <FluentValidationMessage For="() => RegisterInput.Password"/>
+
+                <FluentTextField
+                    Name="repeat_password"
+                    Required="true"
+                    Size="30"
+                    @bind-Value="RegisterInput.PasswordRepeat"
+                    TextFieldType="TextFieldType.Password"
+                    Label="Powtórz hasło"/>
+                <FluentValidationMessage For="() => RegisterInput.PasswordRepeat"/>
+
+                <FluentDivider Style="height: 0.5rem;"/>
+
+                <FluentButton Style="width: 100%;" Type="ButtonType.Submit" Appearance="Appearance.Accent">Zarejestruj</FluentButton>
+
+                <div class="register_error">
+                    @if (_identityResult.Errors.Any())
+                    {
+                        <FluentLabel Color="Color.Info" Weight="FontWeight.Bold">Wystąpiły błędy podczas tworzenia użytkownika</FluentLabel>
+                        <ul style="list-style-type: disc;">
+                            @foreach (var identityError in _identityResult.Errors)
+                            {
+                                <li style="color: red; font-weight: bold;">@identityError.Description</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </FluentStack>
+        </FluentEditForm>
+    </FluentCard>
+</FluentStack>
+
+@code {
+
+    [SupplyParameterFromForm] 
+    private UserRegisterInput? RegisterInput { get; set; } = new(); 
+
+    private IdentityResult _identityResult = new();
+
+    protected override void OnInitialized()
+    {
+    }
+
+    private async Task OnValidFormRegister(EditContext obj)
+    {
+        var user = new AdminWatchUser { UserName = RegisterInput!.Username };
+        _identityResult =
+            await SignInManager.UserManager.CreateAsync(
+                user,
+                RegisterInput.Password!);
+        if (_identityResult.Succeeded)
+        {
+            await SignInManager.SignInAsync(user, isPersistent: false);
+            Navigator.NavigateTo("/");
+        }
+    }
+
+    public class UserRegisterInput
+    {
+        [Required(ErrorMessage = "Nazwa użytkownika jest wymagana")]
+        public string? Username { get; set; } 
+
+        [Required(ErrorMessage = "Hasło jest wymagane")]
+        [DataType(DataType.Password)]
+        public string? Password { get; set; } 
+
+        [Required(ErrorMessage = "Hasło jest wymagane")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Hasła nie są takie same!")]
+        public string? PasswordRepeat { get; set; }
+    }
+
+}
