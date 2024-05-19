@@ -33,15 +33,15 @@
 
         if (await AuthService.IsLoggedIn())
             OpenDashboard();
-        
-        OpenLoginPage();
+        else
+            OpenLoginPage();
     }
 
     private async Task ShowCreateFirstAccountDialog()
     {
         var dialog = await DialogService.ShowInfoAsync(
-            "Aby skorzystać z aplikacji AdminWatch musisz stworzyć konto administratora.",
-            "Brak konta administratora");
+            "Aby skorzystać z aplikacji AdminWatch musisz stworzyć konto Super Administratora.",
+            "Brak konta Super Administratora");
         
         await dialog.Result;
         Navigator.NavigateTo("/register");

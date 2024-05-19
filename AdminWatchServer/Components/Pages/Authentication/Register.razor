@@ -7,7 +7,17 @@
 @inject NavigationManager Navigator;
 
 <FluentStack Style="height: 100vh;" Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
-    <AdminWatchLogo />
+    <AdminWatchLogo/>
+    @if (!AuthService.IsNoAccounts())
+    {
+        <FluentMessageBar
+            Style="width: 20rem"
+            AllowDismiss="false"
+            Title="Wymagane zatwierdzenie."
+            Intent="MessageIntent.Warning">
+            Nowo utworzone konta będą potrzebowały zatwierdzenia przez konto SuperAdministratora.
+        </FluentMessageBar>
+    }
     <FluentCard Width="fit-content" Height="fit-content" MinimalStyle="true">
         <h3>Rejestracja</h3>
         <FluentEditForm Model="@RegisterInput" OnValidSubmit="OnValidFormRegister" FormName="UserRegister">
@@ -43,13 +53,13 @@
                 <div class="register_error">
                     @if (_identityResult.Errors.Any())
                     {
-                    <FluentLabel Color="Color.Info" Weight="FontWeight.Bold">Wystąpiły błędy podczas tworzenia użytkownika</FluentLabel>
-                    <ul style="list-style-type: disc;">
-                        @foreach (var identityError in _identityResult.Errors)
-                        {
-                        <li style="color: red; font-weight: bold;">@identityError.Description</li>
-                        }
-                    </ul>
+                        <FluentLabel Color="Color.Info" Weight="FontWeight.Bold">Wystąpiły błędy podczas tworzenia użytkownika</FluentLabel>
+                        <ul style="list-style-type: disc;">
+                            @foreach (var identityError in _identityResult.Errors)
+                            {
+                                <li style="color: red; font-weight: bold;">@identityError.Description</li>
+                            }
+                        </ul>
                     }
                 </div>
                 <FluentButton Style="width: 100%;" Type="ButtonType.Submit" Appearance="Appearance.Accent">Zarejestruj</FluentButton>
@@ -59,14 +69,15 @@
 </FluentStack>
 
 @code {
+
     private class UserRegisterInput
     {
         [Required(ErrorMessage = "Nazwa użytkownika jest wymagana")]
-        public string? Username { get; set; } 
+        public string? Username { get; set; }
 
         [Required(ErrorMessage = "Hasło jest wymagane")]
         [DataType(DataType.Password)]
-        public string? Password { get; set; } 
+        public string? Password { get; set; }
 
         [Required(ErrorMessage = "Hasło jest wymagane")]
         [DataType(DataType.Password)]
@@ -74,8 +85,7 @@
         public string? PasswordRepeat { get; set; }
     }
 
-    [SupplyParameterFromForm] 
-    private UserRegisterInput? RegisterInput { get; set; } = new(); 
+    [SupplyParameterFromForm] private UserRegisterInput? RegisterInput { get; set; } = new();
 
     private IdentityResult _identityResult = new();
 
@@ -92,9 +102,11 @@
             _identityResult = await AuthService.Register(
                 RegisterInput.Username!,
                 RegisterInput.Password!);
-            
+
             if (_identityResult.Succeeded)
                 Navigator.NavigateTo("/");
         }
     }
+
 }
+
