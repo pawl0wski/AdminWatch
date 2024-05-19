@@ -1,9 +1,11 @@
 @page "/register"
 @using System.ComponentModel.DataAnnotations
 @using AdminWatchServer.Models
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AdminWatchUser> SignInManager;
 @inject NavigationManager Navigator;
+@inject AuthenticationStateProvider AuthState;
 
 <FluentStack Style="height: 100vh;" Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
     <h1>AdminWatch</h1>
@@ -39,22 +41,23 @@
                     Label="Powtórz hasło"/>
                 <FluentValidationMessage For="() => RegisterInput.PasswordRepeat"/>
 
-                <FluentDivider Style="height: 0.5rem;"/>
-
-                <FluentButton Style="width: 100%;" Type="ButtonType.Submit" Appearance="Appearance.Accent">Zarejestruj</FluentButton>
-
                 <div class="register_error">
                     @if (_identityResult.Errors.Any())
                     {
-                        <FluentLabel Color="Color.Info" Weight="FontWeight.Bold">Wystąpiły błędy podczas tworzenia użytkownika</FluentLabel>
-                        <ul style="list-style-type: disc;">
-                            @foreach (var identityError in _identityResult.Errors)
-                            {
-                                <li style="color: red; font-weight: bold;">@identityError.Description</li>
-                            }
-                        </ul>
+                    <FluentLabel Color="Color.Info" Weight="FontWeight.Bold">Wystąpiły błędy podczas tworzenia użytkownika</FluentLabel>
+                    <ul style="list-style-type: disc;">
+                        @foreach (var identityError in _identityResult.Errors)
+                        {
+                        <li style="color: red; font-weight: bold;">@identityError.Description</li>
+                        }
+                    </ul>
                     }
                 </div>
+                
+
+                <FluentButton Style="width: 100%;" Type="ButtonType.Submit" Appearance="Appearance.Accent">Zarejestruj</FluentButton>
+
+
             </FluentStack>
         </FluentEditForm>
     </FluentCard>
@@ -67,8 +70,11 @@
 
     private IdentityResult _identityResult = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        var authStatus = await AuthState.GetAuthenticationStateAsync();
+        if (authStatus.User.Identity?.IsAuthenticated ?? false)
+            Navigator.NavigateTo("/");
     }
 
     private async Task OnValidFormRegister(EditContext obj)
