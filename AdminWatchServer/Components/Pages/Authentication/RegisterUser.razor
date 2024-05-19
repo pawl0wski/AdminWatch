@@ -8,7 +8,7 @@
 @inject AuthenticationStateProvider AuthState;
 
 <FluentStack Style="height: 100vh;" Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
-    <h1>AdminWatch</h1>
+    <AdminWatchLogo />
     <FluentCard Width="fit-content" Height="fit-content" MinimalStyle="true">
         <h3>Rejestracja</h3>
         <FluentEditForm Model="@RegisterInput" OnValidSubmit="OnValidFormRegister" FormName="UserRegister">
@@ -19,7 +19,7 @@
                     Name="RegisterInput.Username"
                     Required="true"
                     Size="30"
-                    @bind-Value="RegisterInput.Username"
+                    @bind-Value="RegisterInput!.Username"
                     Label="Nazwa użytkownika"/>
                 <FluentValidationMessage For="() => RegisterInput.Username"/>
 
@@ -27,7 +27,7 @@
                     Name="RegisterInput.Password"
                     Required="true"
                     Size="30"
-                    @bind-Value="RegisterInput.Password"
+                    @bind-Value="RegisterInput!.Password"
                     TextFieldType="TextFieldType.Password"
                     Label="Hasło"/>
                 <FluentValidationMessage For="() => RegisterInput.Password"/>
@@ -36,7 +36,7 @@
                     Name="RegisterInput.PasswordRepeat"
                     Required="true"
                     Size="30"
-                    @bind-Value="RegisterInput.PasswordRepeat"
+                    @bind-Value="RegisterInput!.PasswordRepeat"
                     TextFieldType="TextFieldType.Password"
                     Label="Powtórz hasło"/>
                 <FluentValidationMessage For="() => RegisterInput.PasswordRepeat"/>
@@ -53,11 +53,7 @@
                     </ul>
                     }
                 </div>
-                
-
                 <FluentButton Style="width: 100%;" Type="ButtonType.Submit" Appearance="Appearance.Accent">Zarejestruj</FluentButton>
-
-
             </FluentStack>
         </FluentEditForm>
     </FluentCard>
@@ -79,13 +75,14 @@
 
     private async Task OnValidFormRegister(EditContext obj)
     {
-        var user = new AdminWatchUser { UserName = RegisterInput!.Username };
+        var user = new AdminWatchUser { UserName = RegisterInput!.Username};
         _identityResult =
             await SignInManager.UserManager.CreateAsync(
                 user,
                 RegisterInput.Password!);
         if (_identityResult.Succeeded)
         {
+            await SignInManager.UserManager.SetLockoutEnabledAsync(user, false);
             await SignInManager.SignInAsync(user, isPersistent: false);
             Navigator.NavigateTo("/");
         }

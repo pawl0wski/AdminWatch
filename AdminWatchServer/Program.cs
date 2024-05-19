@@ -38,6 +38,7 @@ public class Program
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+                options.SignIn.RequireConfirmedAccount = false;
             })
             .AddEntityFrameworkStores<AdminWatchContext>();
         
@@ -53,8 +54,8 @@ public class Program
             app.UseHsts();
         }
         
-        app.UseAuthorization();
         app.UseAuthentication();
+        app.UseAuthorization();
 
         // app.UseHttpsRedirection();
 

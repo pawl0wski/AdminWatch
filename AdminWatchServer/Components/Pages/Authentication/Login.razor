@@ -1,0 +1,105 @@
+@page "/login"
+@using System.ComponentModel.DataAnnotations
+@using AdminWatchServer.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AdminWatchUser> SignInManager
+@inject NavigationManager Navigator;
+@inject AuthenticationStateProvider AuthState;
+
+<FluentStack
+    Style="height: 100vh"
+    Orientation="Orientation.Vertical"
+    HorizontalAlignment="HorizontalAlignment.Center"
+    VerticalAlignment="VerticalAlignment.Center">
+    <AdminWatchLogo/>
+
+    <FluentCard MinimalStyle Style="max-width: fit-content; height: fit-content" >
+        <h3>Logowanie</h3>
+        <FluentEditForm 
+            Model="LoginInput"
+            FormName="LoginForm"
+            OnValidSubmit="OnLogin">
+            <FluentStack Orientation="Orientation.Vertical">
+                <DataAnnotationsValidator/>
+
+                <FluentTextField
+                    Label="Nazwa użytkownika"
+                    Name="LoginInput.Username"
+                    Size="25"
+                    @bind-Value="LoginInput!.Username"/>
+                <FluentValidationMessage For="() => LoginInput.Username"/>
+
+                <FluentTextField
+                    Label="Hasło"
+                    TextFieldType="TextFieldType.Password"
+                    Name="LoginInput.Password"
+                    Size="25"
+                    @bind-Value="LoginInput!.Password"/>
+                <FluentValidationMessage For="() => LoginInput.Password"/>
+                <FluentCheckbox 
+                    Label="Zapamiętaj mnie"
+                    Name="LoginInput.RememberMe"
+                    Size="25"
+                    @bind-Value="LoginInput.RememberMe" />
+
+                @if (_loginFail)
+                {
+                    <FluentLabel Color="Color.Error">Nie udało się zalogować. Sprawdź nazwę użytkownika i hasło.</FluentLabel>
+                }
+                
+                <FluentDivider />
+                <FluentButton Style="width: 100%" Type="ButtonType.Submit" Appearance="Appearance.Accent">Zaloguj się</FluentButton>
+            </FluentStack>
+        </FluentEditForm>
+    </FluentCard>
+</FluentStack>
+
+@code {
+
+    private class UserLoginInput
+    {
+        [Required (ErrorMessage = "Musisz podać nazwe użytkownika")] 
+        public string? Username { get; set; }
+
+        [Required (ErrorMessage = "Musisz podać hasło")] 
+        public string? Password { get; set; }
+
+        [Required] 
+        public bool RememberMe { get; set; }
+    }
+
+    [SupplyParameterFromForm]
+    private UserLoginInput? LoginInput { get; set; } = new();
+
+    private bool _loginFail = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthState.GetAuthenticationStateAsync();
+        if (authState.User.Identity?.IsAuthenticated ?? false)
+            Navigator.NavigateTo("/");
+    }
+
+    private async Task OnLogin(EditContext obj)
+    {
+        if (LoginInput is not null)
+        {
+            var result = await SignInManager.PasswordSignInAsync(
+                LoginInput.Username!,
+                LoginInput.Password!,
+                false,
+                false);
+
+            if (!result.Succeeded)
+            {
+                _loginFail = true;
+                return;
+            }
+        
+            Navigator.NavigateTo("/");
+        }
+    }
+
+}
