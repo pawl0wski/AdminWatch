@@ -29,11 +29,6 @@ public class Program
 
         builder.Services.AddCascadingAuthenticationState();
         
-        builder.Services.AddAuthentication().AddCookie(options =>
-        {
-            options.LogoutPath = "/logout";
-            options.LoginPath = "/login";
-        });
 
         builder.Services.AddScoped<IAuthService, AuthService>();
         
@@ -46,6 +41,14 @@ public class Program
                 options.SignIn.RequireConfirmedAccount = false;
             })
             .AddEntityFrameworkStores<AdminWatchContext>();
+        
+        builder.Services.AddAuthentication().AddCookie();
+
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.LoginPath = new PathString("/login");
+        });
+        
         
         builder.Services.AddFluentUIComponents();
 

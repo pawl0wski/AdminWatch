@@ -4,12 +4,16 @@
 @inject IAuthService AuthService
 @inject NavigationManager Navigator;
 
+<p>Wylogowowanie...</p>
+
 @code {
 
     protected override async Task OnInitializedAsync()
-    {
+    {   
         await AuthService.Logout();
-        Navigator.NavigateTo("/");
+        
+        Navigator.NavigateTo("/", true, true);
+
     }
 
 }
