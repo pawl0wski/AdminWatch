@@ -13,10 +13,24 @@ public class AuthService(SignInManager<AdminWatchUser> signInManager, Authentica
         var newUser = new AdminWatchUser { UserName = username, LockoutEnabled = LockOnDefault };
         
         var result =  await signInManager.UserManager.CreateAsync(newUser, password);
-        await signInManager.UserManager.SetLockoutEnabledAsync(newUser, false);
         await signInManager.SignInAsync(newUser, false);
+
+        await MakeFirstUserSuperAdmin(newUser);
         
         return result;
+    }
+
+    private async Task MakeFirstUserSuperAdmin(AdminWatchUser user)
+    {
+        if ((GetAllUsers().Count - 1) == 0)
+        {
+            await signInManager.UserManager.AddToRoleAsync(user, "SuperAdmin");
+            await signInManager.UserManager.SetLockoutEnabledAsync(user, false);
+        }
+        else
+        {
+            await signInManager.UserManager.AddToRoleAsync(user, "Admin");
+        }
     }
 
     public async Task<bool> IsLoggedIn()
@@ -39,5 +53,15 @@ public class AuthService(SignInManager<AdminWatchUser> signInManager, Authentica
     public bool IsNoAccounts()
     {
         return !signInManager.UserManager.Users.Any();
+    }
+
+    public List<AdminWatchUser> GetAllUsers()
+    {
+        return signInManager.UserManager.Users.ToList();
+    }
+
+    public async Task<bool> IsSuperAdmin(AdminWatchUser user)
+    {
+        return await signInManager.UserManager.IsInRoleAsync(user, "SuperAdmin");
     }
 }

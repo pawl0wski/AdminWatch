@@ -1,3 +1,4 @@
+using AdminWatchServer.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace AdminWatchServer.Services;
@@ -13,4 +14,8 @@ public interface IAuthService
     public Task Logout();
 
     public bool IsNoAccounts();
+
+    public List<AdminWatchUser> GetAllUsers();
+
+    public Task<bool> IsSuperAdmin(AdminWatchUser user);
 }
