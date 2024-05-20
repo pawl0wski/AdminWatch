@@ -1,5 +1,8 @@
 @page "/logout"
 @using AdminWatchServer.Services
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 @inject IAuthService AuthService
 @inject NavigationManager Navigator;
