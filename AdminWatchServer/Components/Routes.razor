@@ -4,7 +4,9 @@
         <FocusOnNavigate RouteData="routeData" Selector="h1"/>
     </Found>
 </Router>
-<FluentToastProvider />
+<FluentToastProvider 
+    Position="ToastPosition.BottomRight"
+    @rendermode="InteractiveServer" />
 <FluentDialogProvider @rendermode="InteractiveServer" />
 <FluentTooltipProvider />
 <FluentMessageBarProvider />

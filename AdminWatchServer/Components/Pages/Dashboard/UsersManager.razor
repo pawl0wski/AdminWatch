@@ -1,4 +1,5 @@
 @page "/dashboard/admins"
+@rendermode InteractiveServer
 @using AdminWatchServer.Services
 @using Microsoft.AspNetCore.Authorization
 
@@ -9,13 +10,20 @@
 
 <h1 style="margin-bottom: 2rem">Administratorzy</h1>
 
-<FluentStack 
+<FluentStack
     Wrap="true"
     Orientation="Orientation.Horizontal"
     HorizontalGap="20"
     VerticalGap="20">
     @foreach (var user in AuthService.GetAllUsers())
     {
-        <UserEntry User="user"/>
+        <UserEntry User="user"
+                   ApproveUser="async () => await AuthService.ApproveUser(user)"
+                   UnApproveUser="async () => await AuthService.UnApproveUser(user)"
+                   DeleteUser="async () => { await AuthService.DeleteUser(user); StateHasChanged(); }"/>
     }
 </FluentStack>
+
+@code {
+
+}

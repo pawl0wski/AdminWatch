@@ -9,13 +9,25 @@ public interface IAuthService
 
     public Task<bool> IsLoggedIn();
 
-    public Task<bool> Login(string username, string password, bool isPersistent);
+    public Task<LoginDeniedReason?> Login(string username, string password, bool isPersistent);
 
     public Task Logout();
 
     public bool IsNoAccounts();
 
+    public Task DeleteUser(AdminWatchUser user);
+
+    public Task ApproveUser(AdminWatchUser user);
+
+    public Task UnApproveUser(AdminWatchUser user);
+
     public List<AdminWatchUser> GetAllUsers();
 
     public Task<bool> IsSuperAdmin(AdminWatchUser user);
+}
+
+public enum LoginDeniedReason
+{
+    BadPasswordOrUsername,
+    NotApproved,
 }

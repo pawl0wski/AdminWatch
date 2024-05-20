@@ -25,7 +25,8 @@ public class AuthService(SignInManager<AdminWatchUser> signInManager, Authentica
         if ((GetAllUsers().Count - 1) == 0)
         {
             await signInManager.UserManager.AddToRoleAsync(user, "SuperAdmin");
-            await signInManager.UserManager.SetLockoutEnabledAsync(user, false);
+            user.ApprovedBySuperAdmin = true;
+            await signInManager.UserManager.UpdateAsync(user);
         }
         else
         {
@@ -39,10 +40,18 @@ public class AuthService(SignInManager<AdminWatchUser> signInManager, Authentica
         return state.User.Identity?.IsAuthenticated ?? false;
     }
 
-    public async Task<bool> Login(string username, string password, bool isPersistent)
+    public async Task<LoginDeniedReason?> Login(string username, string password, bool isPersistent)
     {
+        var user = await signInManager.UserManager.FindByNameAsync(username);
+        
+        if (!user?.ApprovedBySuperAdmin ?? false)
+            return LoginDeniedReason.NotApproved;
+        
         var state = await signInManager.PasswordSignInAsync(username, password, isPersistent, false);
-        return !state.Succeeded;
+        if (!state.Succeeded)
+            return LoginDeniedReason.BadPasswordOrUsername;
+
+        return null;
     }
 
     public async Task Logout()
@@ -54,6 +63,24 @@ public class AuthService(SignInManager<AdminWatchUser> signInManager, Authentica
     {
         return !signInManager.UserManager.Users.Any();
     }
+
+    public async Task DeleteUser(AdminWatchUser user)
+    {
+        await signInManager.UserManager.DeleteAsync(user);
+    }
+
+    public async Task ApproveUser(AdminWatchUser user)
+    {
+        user.ApprovedBySuperAdmin = true;
+        await signInManager.UserManager.UpdateAsync(user);
+    }
+
+    public async Task UnApproveUser(AdminWatchUser user)
+    {
+        user.ApprovedBySuperAdmin = false;
+        await signInManager.UserManager.UpdateAsync(user);
+    }
+    
 
     public List<AdminWatchUser> GetAllUsers()
     {

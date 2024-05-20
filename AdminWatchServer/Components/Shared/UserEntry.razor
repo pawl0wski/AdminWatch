@@ -1,7 +1,9 @@
 @using AdminWatchServer.Models
 @using AdminWatchServer.Services
+@rendermode InteractiveServer
 
 @inject IAuthService AuthService;
+@inject IToastService ToastService;
 
 <FluentCard Width="20rem" Height="fit-content">
 
@@ -15,7 +17,7 @@
                          VerticalGap="5">
                 <p style="margin: 0">@User.UserName</p>
                 <FluentStack Orientation="Orientation.Horizontal">
-                    @if (_isSuperAdmin is { IsCompletedSuccessfully: true, Result: true })
+                    @if (IsSuperAdmin())
                     {
                         <FluentBadge Appearance="Appearance.Accent">Super Admin</FluentBadge>
                     }
@@ -24,24 +26,39 @@
                         <FluentBadge Appearance="Appearance.Neutral">Admin</FluentBadge>
                     }
 
-                    @if (User.LockoutEnabled)
+                    @if (!User.ApprovedBySuperAdmin)
                     {
-                        <FluentBadge Fill="red" BackgroundColor="red" Color="white">Zablokowany</FluentBadge>
+                        <FluentBadge Fill="red" BackgroundColor="red" Color="white">Wymaga zatwierdzenia</FluentBadge>
                     }
                 </FluentStack>
             </FluentStack>
         </FluentStack>
-            <FluentDivider Style="margin: 0.2rem 0; width: 100%" Role="DividerRole.Presentation"/>
+        <FluentDivider Style="margin: 0.2rem 0; width: 100%" Role="DividerRole.Presentation"/>
         <FluentStack
             Orientation="Orientation.Horizontal">
-            <FluentButton IconStart="@(new Icons.Regular.Size16.PersonDelete())">Usuń</FluentButton>
-            @if (User.LockoutEnabled)
+            <FluentButton
+                OnClick="OnDelete"
+                Disabled="IsSuperAdmin()"
+                IconStart="@(new Icons.Regular.Size16.PersonDelete())">
+                Usuń
+            </FluentButton>
+            @if (!User.ApprovedBySuperAdmin)
             {
-                <FluentButton IconStart="@(new Icons.Regular.Size16.LockOpen())">Odblokuj</FluentButton>
+                <FluentButton
+                    OnClick="OnLock"
+                    Disabled="IsSuperAdmin()"
+                    IconStart="@(new Icons.Regular.Size16.LockOpen())">
+                    Odblokuj
+                </FluentButton>
             }
             else
             {
-             <FluentButton IconStart="@(new Icons.Regular.Size16.LockClosed())">Zablokuj</FluentButton>
+                <FluentButton
+                    OnClick="OnUnlock"
+                    Disabled="IsSuperAdmin()"
+                    IconStart="@(new Icons.Regular.Size16.LockClosed())">
+                    Zablokuj
+                </FluentButton>
             }
         </FluentStack>
     </FluentStack>
@@ -50,7 +67,17 @@
 
 @code {
 
-    [Parameter] public required AdminWatchUser User { get; set; }
+    [Parameter] 
+    public required AdminWatchUser User { get; set; }
+
+    [Parameter]
+    public required Func<Task> ApproveUser { get; set; }
+
+    [Parameter] 
+    public required Func<Task> UnApproveUser { get; set; }
+
+    [Parameter] 
+    public required Func<Task> DeleteUser { get; set; }
 
     private Task<bool>? _isSuperAdmin;
 
@@ -59,6 +86,50 @@
         _isSuperAdmin = CheckForSuperAdmin();
     }
 
+    private bool IsSuperAdmin() => _isSuperAdmin is { IsCompletedSuccessfully: true, Result: true };
+
     private Task<bool> CheckForSuperAdmin() => AuthService.IsSuperAdmin(User);
+
+    private async Task OnDelete()
+    {
+        try
+        {
+            await DeleteUser();
+            ToastService.ShowInfo($"Użytkownik usunięty {User.UserName}.");
+        }
+        catch (Exception e)
+        {
+            ToastService.ShowError($"Wystąpił błąd z usunięciem użytkownika {User.UserName}");
+            throw e;
+        }
+    }
+
+    private async Task OnUnlock()
+    {
+        try
+        {
+            await UnApproveUser();
+            ToastService.ShowInfo($"Odblokowano użytkownika {User.UserName}.");
+        }
+        catch (Exception e)
+        {
+            ToastService.ShowError($"Wystąpił błąd z odblokowaniem użytkownika {User.UserName}");
+            throw e;
+        }
+    }
+
+    private async Task OnLock()
+    {
+        try 
+        {
+            await ApproveUser();
+            ToastService.ShowInfo($"Zablokowano użytkownika {User.UserName}.");
+        }
+        catch (Exception e)
+        {
+            ToastService.ShowError($"Wystąpił błąd z zablokowaniem użytkownika {User.UserName}");
+            throw e;
+        }
+    }
 
 }

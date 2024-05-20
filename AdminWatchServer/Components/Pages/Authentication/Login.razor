@@ -41,11 +41,21 @@
                     Size="25"
                     @bind-Value="LoginInput.RememberMe" />
 
-                @if (_loginFail)
+                @if (_deniedReason is not null)
                 {
-                    <FluentLabel
-                        Style="width: 15rem"
-                        Color="Color.Error">Nie udało się zalogować. Sprawdź nazwę użytkownika i hasło.</FluentLabel>
+                    @if (_deniedReason == LoginDeniedReason.BadPasswordOrUsername)
+                    {
+                        <FluentLabel
+                            Style="width: 15rem"
+                            Color="Color.Error">Nie udało się zalogować. Sprawdź nazwę użytkownika i hasło.</FluentLabel>
+                    }
+
+                    @if (_deniedReason == LoginDeniedReason.NotApproved)
+                    {
+                        <FluentLabel
+                            Style="width: 15rem"
+                            Color="Color.Error">Zaczekaj aż Super Administrator zaakceptuje twoje konto.</FluentLabel>
+                    }
                 }
                 
                 <FluentDivider />
@@ -72,7 +82,7 @@
     [SupplyParameterFromForm]
     private UserLoginInput? LoginInput { get; set; } = new();
 
-    private bool _loginFail;
+    private LoginDeniedReason? _deniedReason;
     
     protected override async Task OnInitializedAsync()
     {
@@ -84,12 +94,12 @@
     {
         if (LoginInput is not null)
         {
-            _loginFail = await AuthService.Login(
+            _deniedReason = await AuthService.Login(
                 LoginInput.Username!,
                 LoginInput.Password!,
                 LoginInput.RememberMe);
 
-            if (_loginFail)
+            if (_deniedReason is not null)
                 return;
         
             Navigator.NavigateTo("/");

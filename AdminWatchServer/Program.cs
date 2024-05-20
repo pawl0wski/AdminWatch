@@ -81,6 +81,7 @@ public class Program
         
         builder.Services.AddDbContext<AdminWatchContext>(options =>
         {
+            options.EnableSensitiveDataLogging();
             options.UseSqlite(new SqliteConnectionStringBuilder
             {
                 DataSource = dbFilePath,
@@ -97,7 +98,6 @@ public class Program
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
-                options.SignIn.RequireConfirmedAccount = false;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AdminWatchContext>();
         
