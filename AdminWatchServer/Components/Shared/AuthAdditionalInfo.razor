@@ -1,0 +1,16 @@
+<div
+    style="text-align: center"
+    class="additional_info">
+    <p style="margin: 0">@TopInfo</p>
+    <NavLink href="@Href">@LinkText</NavLink>
+</div>
+
+@code {
+
+    [Parameter] public required string Href { get; set; }
+
+    [Parameter] public required string TopInfo { get; set; }
+
+    [Parameter] public required string LinkText { get; set; }
+
+}

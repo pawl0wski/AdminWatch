@@ -13,7 +13,6 @@
         <FluentMessageBar
             Style="width: 20rem"
             AllowDismiss="false"
-            Title="Wymagane zatwierdzenie."
             Intent="MessageIntent.Warning">
             Nowo utworzone konta będą potrzebowały zatwierdzenia przez konto Super Administratora.
         </FluentMessageBar>
@@ -66,6 +65,11 @@
             </FluentStack>
         </FluentEditForm>
     </FluentCard>
+    <AuthAdditionalInfo 
+        TopInfo="Masz już konto w systemie?"
+        LinkText="Zaloguj się"
+        Href="/login"
+        />
 </FluentStack>
 
 @code {

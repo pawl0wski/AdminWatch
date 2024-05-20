@@ -57,12 +57,16 @@
                             Color="Color.Error">Zaczekaj aż Super Administrator zaakceptuje twoje konto.</FluentLabel>
                     }
                 }
-                
                 <FluentDivider />
                 <FluentButton Style="width: 100%" Type="ButtonType.Submit" Appearance="Appearance.Accent">Zaloguj się</FluentButton>
             </FluentStack>
         </FluentEditForm>
     </FluentCard>
+    <AuthAdditionalInfo
+        TopInfo="Nie masz konta w systemie?"
+        LinkText="Stwórz je tutaj"
+        Href="/register"
+    />
 </FluentStack>
 
 @code {
