@@ -1,6 +1,7 @@
 @page "/register"
 @using System.ComponentModel.DataAnnotations
 @using AdminWatchServer.Services
+@using AdminWatchServer.Services.Auth
 @using Microsoft.AspNetCore.Identity
 
 @inject IAuthService AuthService;
@@ -50,11 +51,11 @@
                 <FluentValidationMessage For="() => RegisterInput.PasswordRepeat"/>
 
                 <div class="register_error">
-                    @if (_identityResult.Errors.Any())
+                    @if (_registerStatus?.HaveAnyErrors() ?? false)
                     {
                         <FluentLabel Color="Color.Info" Weight="FontWeight.Bold">Wystąpiły błędy podczas tworzenia użytkownika</FluentLabel>
                         <ul style="list-style-type: disc;">
-                            @foreach (var identityError in _identityResult.Errors)
+                            @foreach (var identityError in _registerStatus.GetErrors())
                             {
                                 <li style="color: red; font-weight: bold;">@identityError.Description</li>
                             }
@@ -91,7 +92,7 @@
 
     [SupplyParameterFromForm] private UserRegisterInput? RegisterInput { get; set; } = new();
 
-    private IdentityResult _identityResult = new();
+    private RegisterStatus? _registerStatus;
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,11 +104,11 @@
     {
         if (RegisterInput is not null)
         {
-            _identityResult = await AuthService.Register(
+            _registerStatus = await AuthService.Register(
                 RegisterInput.Username!,
                 RegisterInput.Password!);
 
-            if (_identityResult.Succeeded)
+            if (_registerStatus.Succeeded())
                 Navigator.NavigateTo("/");
         }
     }

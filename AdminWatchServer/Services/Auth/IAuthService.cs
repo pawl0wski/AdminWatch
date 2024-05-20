@@ -1,11 +1,11 @@
 using AdminWatchServer.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace AdminWatchServer.Services;
+namespace AdminWatchServer.Services.Auth;
 
 public interface IAuthService
 {
-    public Task<IdentityResult> Register(string username, string password);
+    public Task<RegisterStatus> Register(string username, string password);
 
     public Task<bool> IsLoggedIn();
 
@@ -24,10 +24,4 @@ public interface IAuthService
     public List<AdminWatchUser> GetAllUsers();
 
     public Task<bool> IsSuperAdmin(AdminWatchUser user);
-}
-
-public enum LoginDeniedReason
-{
-    BadPasswordOrUsername,
-    NotApproved,
 }

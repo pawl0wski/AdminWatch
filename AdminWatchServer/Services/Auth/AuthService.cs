@@ -2,36 +2,41 @@ using AdminWatchServer.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 
-namespace AdminWatchServer.Services;
+namespace AdminWatchServer.Services.Auth;
 
 public class AuthService(SignInManager<AdminWatchUser> signInManager, AuthenticationStateProvider authState) : IAuthService
 {
     private const bool LockOnDefault = false;
 
-    public async Task<IdentityResult> Register(string username, string password)
+    public async Task<RegisterStatus> Register(string username, string password)
     {
         var newUser = new AdminWatchUser { UserName = username, LockoutEnabled = LockOnDefault };
         
         var result =  await signInManager.UserManager.CreateAsync(newUser, password);
-        await signInManager.SignInAsync(newUser, false);
-
-        await MakeFirstUserSuperAdmin(newUser);
+        if (!result.Succeeded)
+            return new RegisterStatus { Result = result };
         
-        return result;
+
+        var wasSuperAdmin = await MakeFirstUserSuperAdmin(newUser);
+        
+        if (wasSuperAdmin)
+            await signInManager.SignInAsync(newUser, false);
+        
+        return new RegisterStatus{RegisteredSuperUser = wasSuperAdmin, Result = result};
     }
 
-    private async Task MakeFirstUserSuperAdmin(AdminWatchUser user)
+    private async Task<bool> MakeFirstUserSuperAdmin(AdminWatchUser user )
     {
         if ((GetAllUsers().Count - 1) == 0)
         {
             await signInManager.UserManager.AddToRoleAsync(user, "SuperAdmin");
             user.ApprovedBySuperAdmin = true;
             await signInManager.UserManager.UpdateAsync(user);
+            return true;
         }
-        else
-        {
-            await signInManager.UserManager.AddToRoleAsync(user, "Admin");
-        }
+        
+        await signInManager.UserManager.AddToRoleAsync(user, "Admin");
+        return false;
     }
 
     public async Task<bool> IsLoggedIn()

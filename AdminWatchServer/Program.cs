@@ -1,6 +1,7 @@
 using AdminWatchServer.Components;
 using AdminWatchServer.Models;
 using AdminWatchServer.Services;
+using AdminWatchServer.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
