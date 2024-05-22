@@ -4,5 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdminWatchServer;
 
-public class AdminWatchContext(DbContextOptions<AdminWatchContext> context) 
-    : IdentityDbContext<AdminWatchUser>(context);
+public class AdminWatchContext(DbContextOptions<AdminWatchContext> context)
+    : IdentityDbContext<AdminWatchUser>(context)
+{
+    public DbSet<Device> Devices { get; set; }
+}
