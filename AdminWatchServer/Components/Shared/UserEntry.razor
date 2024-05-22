@@ -46,7 +46,7 @@
             @if (!User.ApprovedBySuperAdmin)
             {
                 <FluentButton
-                    OnClick="OnLock"
+                    OnClick="OnApprove"
                     Disabled="IsSuperAdmin()"
                     IconStart="@(new Icons.Regular.Size16.LockOpen())">
                     Odblokuj
@@ -55,7 +55,7 @@
             else
             {
                 <FluentButton
-                    OnClick="OnUnlock"
+                    OnClick="OnUnApprove"
                     Disabled="IsSuperAdmin()"
                     IconStart="@(new Icons.Regular.Size16.LockClosed())">
                     Zablokuj
@@ -105,12 +105,12 @@
         }
     }
 
-    private async Task OnUnlock()
+    private async Task OnApprove()
     {
         try
         {
-            await UnApproveUser();
-            ToastService.ShowInfo($"Odblokowano użytkownika {User.UserName}.");
+            await ApproveUser();
+            ToastService.ShowInfo($"Zatwierdzono użytkownika {User.UserName}.");
         }
         catch (Exception e)
         {
@@ -119,11 +119,11 @@
         }
     }
 
-    private async Task OnLock()
+    private async Task OnUnApprove()
     {
         try 
         {
-            await ApproveUser();
+            await UnApproveUser();
             ToastService.ShowInfo($"Zablokowano użytkownika {User.UserName}.");
         }
         catch (Exception e)
