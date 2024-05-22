@@ -28,7 +28,6 @@ public static class Program
         };
 
         await ConnectServerService(service);
-        await service.Connect();
     }
 
     private static async Task ConnectServerService(IServerService service)
