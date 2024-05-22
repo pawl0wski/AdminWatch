@@ -8,7 +8,8 @@ public class DeviceInfo
     public int Id { get; set; }
 
     [Required]
-    public required DeviceOs Os { get; set; }
+    [MaxLength(64)]
+    public required string Os { get; set; }
 
     [Required]
     [MaxLength(15)]
@@ -21,11 +22,5 @@ public class DeviceInfo
     [Required]
     [MaxLength(255)]
     public required string ProcessorName { get; set; }
-    
 
-    public enum DeviceOs
-    {
-        Windows,
-        Linux
-    }
 }

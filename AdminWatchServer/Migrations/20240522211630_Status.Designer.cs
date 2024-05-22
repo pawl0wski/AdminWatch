@@ -3,6 +3,7 @@ using System;
 using AdminWatchServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdminWatchServer.Migrations
 {
     [DbContext(typeof(AdminWatchContext))]
-    partial class AdminWatchContextModelSnapshot : ModelSnapshot
+    [Migration("20240522211630_Status")]
+    partial class Status
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.5");
@@ -90,7 +93,7 @@ namespace AdminWatchServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("InfoId")
+                    b.Property<int?>("InfoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -124,10 +127,8 @@ namespace AdminWatchServer.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Os")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Os")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ProcessorName")
                         .IsRequired()
@@ -271,9 +272,7 @@ namespace AdminWatchServer.Migrations
                 {
                     b.HasOne("AdminWatchServer.Models.DeviceInfo", "Info")
                         .WithMany()
-                        .HasForeignKey("InfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InfoId");
 
                     b.Navigation("Info");
                 });

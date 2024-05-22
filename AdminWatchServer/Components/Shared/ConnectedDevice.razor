@@ -7,8 +7,14 @@
             <h3>@Device.Name</h3>
         </FluentStack>
         <FluentStack Orientation="Orientation.Vertical">
-            <p style="margin: 0">System Operacyjny: @Device.Info.Os</p>
-            <p class="margin: 0">IP: @Device.Info.Ip</p>
+            <p style="margin: 0">
+                <FluentIcon Value="@(new Icons.Regular.Size20.Wifi1())" />
+                @Device.Info.Os
+            </p>
+            <p class="margin: 0">
+                <FluentIcon Value="@(new Icons.Regular.Size20.Settings())" />
+                IP: @Device.Info.Ip
+            </p>
         </FluentStack>
     </DashboardCardContent>
     <DashboardCardButtons>

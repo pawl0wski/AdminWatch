@@ -3,6 +3,7 @@ using System;
 using AdminWatchServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdminWatchServer.Migrations
 {
     [DbContext(typeof(AdminWatchContext))]
-    partial class AdminWatchContextModelSnapshot : ModelSnapshot
+    [Migration("20240522215107_AdjustDevice")]
+    partial class AdjustDevice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.5");
@@ -126,7 +129,6 @@ namespace AdminWatchServer.Migrations
 
                     b.Property<string>("Os")
                         .IsRequired()
-                        .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProcessorName")

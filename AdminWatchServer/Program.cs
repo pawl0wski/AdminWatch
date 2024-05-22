@@ -1,5 +1,5 @@
 using AdminWatchServer.Components;
-using AdminWatchServer.Hubs;
+using AdminWatchServer.DevicesConnector.Hubs;
 using AdminWatchServer.Models;
 using AdminWatchServer.Services.Auth;
 using AdminWatchServer.Services.Devices;
@@ -51,7 +51,7 @@ public class Program
 
         await CreateRoles(app);
 
-        app.MapHub<DeviceHub>("/hub/devices");
+        app.MapHub<DevicesConnectorHub>("/DevicesConnector");
         
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();
