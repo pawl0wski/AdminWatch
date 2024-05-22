@@ -1,0 +1,16 @@
+<FluentCard
+    Width="@Width"
+    Height="fit-content">
+    <FluentStack
+        Orientation="Orientation.Vertical">
+        @ChildContent
+    </FluentStack>
+</FluentCard>
+
+@code {
+
+    [Parameter] public required RenderFragment ChildContent { get; set; }
+
+    [Parameter] public required string Width { get; set; }
+
+}

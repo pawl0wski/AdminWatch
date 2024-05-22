@@ -6,9 +6,8 @@
 @inject IAuthService AuthService;
 @inject IToastService ToastService;
 
-<FluentCard Width="20rem" Height="fit-content">
-
-    <FluentStack Orientation="Orientation.Vertical">
+<DashboardCard Width="20rem">
+    <DashboardCardContent>
         <FluentStack Orientation="Orientation.Horizontal">
             <FluentPersona
                 Image="@(new Icons.Regular.Size48.Person().ToDataUri(size: "25px", color: "white"))"
@@ -34,51 +33,44 @@
                 </FluentStack>
             </FluentStack>
         </FluentStack>
-        <FluentDivider Style="margin: 0.2rem 0; width: 100%" Role="DividerRole.Presentation"/>
-        <FluentStack
-            Orientation="Orientation.Horizontal">
+    </DashboardCardContent>
+    <DashboardCardButtons>
+        <FluentButton
+            OnClick="OnDelete"
+            Disabled="IsSuperAdmin()"
+            IconStart="@(new Icons.Regular.Size16.PersonDelete())">
+            Usuń
+        </FluentButton>
+        @if (!User.ApprovedBySuperAdmin)
+        {
             <FluentButton
-                OnClick="OnDelete"
+                OnClick="OnApprove"
                 Disabled="IsSuperAdmin()"
-                IconStart="@(new Icons.Regular.Size16.PersonDelete())">
-                Usuń
+                IconStart="@(new Icons.Regular.Size16.LockOpen())">
+                Odblokuj
             </FluentButton>
-            @if (!User.ApprovedBySuperAdmin)
-            {
-                <FluentButton
-                    OnClick="OnApprove"
-                    Disabled="IsSuperAdmin()"
-                    IconStart="@(new Icons.Regular.Size16.LockOpen())">
-                    Odblokuj
-                </FluentButton>
-            }
-            else
-            {
-                <FluentButton
-                    OnClick="OnUnApprove"
-                    Disabled="IsSuperAdmin()"
-                    IconStart="@(new Icons.Regular.Size16.LockClosed())">
-                    Zablokuj
-                </FluentButton>
-            }
-        </FluentStack>
-    </FluentStack>
-
-</FluentCard>
+        }
+        else
+        {
+            <FluentButton
+                OnClick="OnUnApprove"
+                Disabled="IsSuperAdmin()"
+                IconStart="@(new Icons.Regular.Size16.LockClosed())">
+                Zablokuj
+            </FluentButton>
+        }
+    </DashboardCardButtons>
+</DashboardCard>
 
 @code {
 
-    [Parameter] 
-    public required AdminWatchUser User { get; set; }
+    [Parameter] public required AdminWatchUser User { get; set; }
 
-    [Parameter]
-    public required Func<Task> ApproveUser { get; set; }
+    [Parameter] public required Func<Task> ApproveUser { get; set; }
 
-    [Parameter] 
-    public required Func<Task> UnApproveUser { get; set; }
+    [Parameter] public required Func<Task> UnApproveUser { get; set; }
 
-    [Parameter] 
-    public required Func<Task> DeleteUser { get; set; }
+    [Parameter] public required Func<Task> DeleteUser { get; set; }
 
     private Task<bool>? _isSuperAdmin;
 
@@ -121,7 +113,7 @@
 
     private async Task OnUnApprove()
     {
-        try 
+        try
         {
             await UnApproveUser();
             ToastService.ShowInfo($"Zablokowano użytkownika {User.UserName}.");

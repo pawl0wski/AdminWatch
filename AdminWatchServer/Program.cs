@@ -2,6 +2,7 @@ using AdminWatchServer.Components;
 using AdminWatchServer.Models;
 using AdminWatchServer.Services;
 using AdminWatchServer.Services.Auth;
+using AdminWatchServer.Services.Devices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ public class Program
 
 
         ConfigureDatabase(ref builder);
+
+        builder.Services.AddScoped<IDevicesRepository, DevicesRepository>();
 
         ConfigureAuthentication(ref builder);
 
@@ -47,20 +50,13 @@ public class Program
 
         await CreateRoles(app);
         
-        using (var scope = app.Services.CreateScope())
-        {
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            Console.WriteLine(roleManager);
-        }
-        
-        
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();
 
         app.Run();
     }
 
-    private static async Task CreateRoles(WebApplication app)
+    private static async Task CreateRoles(IHost app)
     {
         using var scope = app.Services.CreateScope();
         var roleManager = scope.ServiceProvider.GetRequiredService <RoleManager<IdentityRole>>();

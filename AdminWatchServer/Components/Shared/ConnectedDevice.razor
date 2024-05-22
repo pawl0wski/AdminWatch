@@ -1,10 +1,31 @@
-<FluentCard>
-    <FluentIcon 
-        Value="@(new Icons.Regular.Size32.DesktopPulse())" />
-</FluentCard>
+@using AdminWatchServer.Models
+<DashboardCard Width="15rem">
+    <DashboardCardContent>
+        <FluentStack Orientation="Orientation.Horizontal">
+            <FluentIcon
+                Value="@(new Icons.Regular.Size32.DesktopPulse())"/>
+            <h3>@Device.Name</h3>
+        </FluentStack>
+        <FluentStack Orientation="Orientation.Vertical">
+            <p style="margin: 0">System Operacyjny: @Device.Os</p>
+            <p class="margin: 0">IP: @Device.Ip</p>
+        </FluentStack>
+    </DashboardCardContent>
+    <DashboardCardButtons>
+        <FluentButton
+            IconStart="@(new Icons.Regular.Size20.Open())">
+            Przejdź
+        </FluentButton>
+        <FluentButton
+            IconStart="@(new Icons.Regular.Size20.Power())">
+            Wyłącz
+        </FluentButton>
+    </DashboardCardButtons>
+</DashboardCard>
+
 
 @code {
 
-    
+    [Parameter] public required Device Device { get; set; }
 
 }

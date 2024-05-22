@@ -1,11 +1,16 @@
 @page "/dashboard"
+@using AdminWatchServer.Services.Devices
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
+@inject IDevicesRepository DevicesRepository;
 
 @layout DashboardLayout
 
-<h1>Podłączone urządzenia</h1>
+<h1 class="dashboard_title">Podłączone urządzenia</h1>
 
-<FluentStack>
-    
+<FluentStack Wrap="true" HorizontalGap="20" VerticalGap="20">
+    @foreach (var device in DevicesRepository.GetAllDevices())
+    {
+        <ConnectedDevice Device="device" />
+    }
 </FluentStack>
