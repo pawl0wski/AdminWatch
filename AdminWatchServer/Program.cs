@@ -82,7 +82,6 @@ public class Program
         
         builder.Services.AddDbContext<AdminWatchContext>(options =>
         {
-            options.EnableSensitiveDataLogging();
             options.UseSqlite(new SqliteConnectionStringBuilder
             {
                 DataSource = dbFilePath,
