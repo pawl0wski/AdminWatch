@@ -26,6 +26,10 @@
 
 @code {
 
-    [Parameter] public required Device Device { get; set; }
+    [Parameter] 
+    public required Device Device { get; set; }
+
+    [Parameter] 
+    public required Action OnShutdown { get; set; }
 
 }

@@ -1,6 +1,6 @@
 using AdminWatchServer.Components;
+using AdminWatchServer.Hubs;
 using AdminWatchServer.Models;
-using AdminWatchServer.Services;
 using AdminWatchServer.Services.Auth;
 using AdminWatchServer.Services.Devices;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +20,8 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
-
+        builder.Services.AddSignalR();
+        
         ConfigureDatabase(ref builder);
 
         builder.Services.AddScoped<IDevicesRepository, DevicesRepository>();
@@ -49,11 +50,13 @@ public class Program
         app.UseAntiforgery();
 
         await CreateRoles(app);
+
+        app.MapHub<DeviceHub>("/hub/devices");
         
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();
 
-        app.Run();
+        await app.RunAsync();
     }
 
     private static async Task CreateRoles(IHost app)
