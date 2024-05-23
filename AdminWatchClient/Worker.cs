@@ -1,4 +1,4 @@
-using AdminWatchClient.Services.ServerConnector;
+using AdminWatchClient.ServerConnector;
 
 namespace AdminWatchClient;
 

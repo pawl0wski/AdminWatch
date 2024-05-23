@@ -1,7 +1,7 @@
 using System.Net.NetworkInformation;
 using Hardware.Info;
 
-namespace AdminWatchClient.Services.ServerConnector.Actions;
+namespace AdminWatchClient.ServerConnector.Actions;
 
 public class GetLocalIpAction : IBaseAction<string>
 {

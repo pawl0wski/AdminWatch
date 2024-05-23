@@ -1,5 +1,5 @@
-using AdminWatchClient.Services.ServerConnector;
-using AdminWatchClient.Services.ServerConnector.Exceptions;
+using AdminWatchClient.ServerConnector;
+using AdminWatchClient.ServerConnector.Exceptions;
 
 namespace AdminWatchClient;
 

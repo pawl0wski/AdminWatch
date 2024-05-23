@@ -1,4 +1,4 @@
-namespace AdminWatchClient.Services.ServerConnector;
+namespace AdminWatchClient.ServerConnector;
 
 public interface IServerConnectorService
 {

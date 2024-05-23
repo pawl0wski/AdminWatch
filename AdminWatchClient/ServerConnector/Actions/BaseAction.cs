@@ -1,4 +1,4 @@
-namespace AdminWatchClient.Services.ServerConnector.Actions;
+namespace AdminWatchClient.ServerConnector.Actions;
 
 public interface IBaseAction<out TResult>
 {

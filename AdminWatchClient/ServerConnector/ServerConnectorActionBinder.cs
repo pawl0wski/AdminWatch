@@ -1,7 +1,7 @@
-using AdminWatchClient.Services.ServerConnector.Actions;
+using AdminWatchClient.ServerConnector.Actions;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace AdminWatchClient.Services.ServerConnector;
+namespace AdminWatchClient.ServerConnector;
 
 public static class ServerConnectorActionBinder
 {

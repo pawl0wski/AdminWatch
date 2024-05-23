@@ -1,3 +1,3 @@
-namespace AdminWatchClient.Services.ServerConnector.Exceptions;
+namespace AdminWatchClient.ServerConnector.Exceptions;
 
 public class ConnectToServerFailException(string message) : Exception(message);

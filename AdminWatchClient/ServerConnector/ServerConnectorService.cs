@@ -1,7 +1,7 @@
-using AdminWatchClient.Services.ServerConnector.Exceptions;
+using AdminWatchClient.ServerConnector.Exceptions;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace AdminWatchClient.Services.ServerConnector;
+namespace AdminWatchClient.ServerConnector;
 
 public class ServerConnectorService : IServerConnectorService
 {

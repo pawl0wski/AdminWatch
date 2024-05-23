@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace AdminWatchClient.Services.ServerConnector.Actions;
+namespace AdminWatchClient.ServerConnector.Actions;
 
 public class ShutdownAction : IBaseAction<int>
 {

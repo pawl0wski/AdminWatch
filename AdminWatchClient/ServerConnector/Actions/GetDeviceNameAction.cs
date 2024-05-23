@@ -1,4 +1,4 @@
-namespace AdminWatchClient.Services.ServerConnector.Actions;
+namespace AdminWatchClient.ServerConnector.Actions;
 
 public class GetDeviceNameAction : IBaseAction<string> {
     public string Execute()
