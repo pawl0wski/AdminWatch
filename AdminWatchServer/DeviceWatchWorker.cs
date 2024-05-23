@@ -27,6 +27,9 @@ public class DeviceWatchWorker(
 
                 await DeviceObtainer.UpdateFromClient(deviceClient, device);
                 logger.LogInformation($"Updated {device.Id}");
+
+                var currentCpuUtilization = await DeviceCpuUtilizationObtainer.GetFromClient(deviceClient);
+                device.CpuUtilizations.Add(currentCpuUtilization);
                 
                 await dbContext.SaveChangesAsync(stoppingToken);
             }

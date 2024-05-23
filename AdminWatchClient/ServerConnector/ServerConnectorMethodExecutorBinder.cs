@@ -13,6 +13,12 @@ public static class ServerConnectorMethodExecutorBinder
         BindGetOperatingSystem(ref connection);
         BindGetCpuName(ref connection);
         BindGetLocalIp(ref connection);
+        BindCpuUtilization(ref connection);
+    }
+
+    private static void BindCpuUtilization(ref HubConnection connection)
+    {
+        connection.On("GetCpuUtilization", new GetCpuUtilization().Execute);
     }
 
     private static void BindGetLocalIp(ref HubConnection connection)

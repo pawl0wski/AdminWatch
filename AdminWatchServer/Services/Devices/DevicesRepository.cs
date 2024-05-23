@@ -8,6 +8,7 @@ public class DevicesRepository(AdminWatchContext context) : IDevicesRepository
     public List<Device> GetAllDevices()
         => context.Devices
             .Include(dev => dev.Info)
+            .Include(dev => dev.CpuUtilizations)
             .ToList();
 
     public List<Device> GetAllConnectedDevices()
