@@ -1,6 +1,6 @@
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class GetDeviceNameAction : IBaseAction<string> {
+public class GetDeviceNameMethodExecutor : IBaseMethodExecutor<string> {
     public string Execute()
     {
         return Environment.MachineName;

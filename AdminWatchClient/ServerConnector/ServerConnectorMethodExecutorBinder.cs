@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace AdminWatchClient.ServerConnector;
 
-public static class ServerConnectorActionBinder
+public static class ServerConnectorMethodExecutorBinder
 {
     
     public static void BindAllActions(ref HubConnection connection, ConnectionState state)
@@ -17,7 +17,7 @@ public static class ServerConnectorActionBinder
 
     private static void BindGetLocalIp(ref HubConnection connection)
     {
-        connection.On("GetLocalIp", new GetLocalIpAction().Execute);
+        connection.On("GetLocalIp", new GetLocalIpMethodExecutor().Execute);
     }
 
     private static void BindGetCpuName(ref HubConnection connection)
@@ -27,16 +27,16 @@ public static class ServerConnectorActionBinder
 
     private static void BindGetOperatingSystem(ref HubConnection connection)
     {
-        connection.On("GetOperatingSystem", new GetOperatingSystemAction().Execute);
+        connection.On("GetOperatingSystem", new GetOperatingSystemMethodExecutor().Execute);
     }
 
     private static void BindShutdown(ref HubConnection connection)
     {
-        connection.On("ShutDown", new ShutdownAction().Execute);
+        connection.On("ShutDown", new ShutdownMethodExecutor().Execute);
     }
 
     private static void BindGetName(ref HubConnection connection)
     {
-        connection.On("GetDeviceName", new GetDeviceNameAction().Execute);
+        connection.On("GetDeviceName", new GetDeviceNameMethodExecutor().Execute);
     }
 }

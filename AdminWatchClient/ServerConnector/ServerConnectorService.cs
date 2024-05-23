@@ -15,7 +15,7 @@ public class ServerConnectorService : IServerConnectorService
             .WithUrl("http://localhost:5025/DevicesConnector")
             .Build();
 
-        ServerConnectorActionBinder.BindAllActions(ref _connection, state);
+        ServerConnectorMethodExecutorBinder.BindAllActions(ref _connection, state);
     }
 
     public async Task Connect()

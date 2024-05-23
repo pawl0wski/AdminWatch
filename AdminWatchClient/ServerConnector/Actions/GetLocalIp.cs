@@ -3,7 +3,7 @@ using Hardware.Info;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class GetLocalIpAction : IBaseAction<string>
+public class GetLocalIpMethodExecutor : IBaseMethodExecutor<string>
 {
     public string Execute()
     {

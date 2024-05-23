@@ -2,7 +2,7 @@ using Hardware.Info;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class GetCpuName : IBaseAction<string>
+public class GetCpuName : IBaseMethodExecutor<string>
 {
     private readonly HardwareInfo _hardwareInfo = new();
 

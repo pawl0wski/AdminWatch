@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class ShutdownAction : IBaseAction<int>
+public class ShutdownMethodExecutor : IBaseMethodExecutor<int>
 {
     public int Execute()
     {

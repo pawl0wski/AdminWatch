@@ -2,7 +2,7 @@ using Hardware.Info;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class GetOperatingSystemAction : IBaseAction<string>
+public class GetOperatingSystemMethodExecutor : IBaseMethodExecutor<string>
 {
     private readonly HardwareInfo _hardwareInfo = new();
     public string Execute()

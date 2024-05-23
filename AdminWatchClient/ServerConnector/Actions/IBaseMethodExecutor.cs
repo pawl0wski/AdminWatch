@@ -1,6 +1,6 @@
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public interface IBaseAction<out TResult>
+public interface IBaseMethodExecutor<out TResult>
 {
     public TResult Execute();
 }
