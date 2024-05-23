@@ -9,10 +9,11 @@ public class ServerConnectorService : IServerConnectorService
     
     private readonly HubConnection _connection;
 
-    public ServerConnectorService()
+    public ServerConnectorService(IConfiguration config)
     {
+        var serverIpAndPort = config.GetValue<string>("ip");
         _connection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:5025/DevicesConnector")
+            .WithUrl($"http://{serverIpAndPort}/DevicesConnector")
             .Build();
 
         ServerConnectorMethodExecutorBinder.BindAllActions(ref _connection, state);
