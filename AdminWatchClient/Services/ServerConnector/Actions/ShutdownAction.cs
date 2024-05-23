@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace AdminWatchClient.Services.ServerConnector.Actions;
 
-public class ShutdownAction : IBaseAction<object>
+public class ShutdownAction : IBaseAction<int>
 {
-    public object Execute()
+    public int Execute()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             Process.Start("shutdown", "now");
@@ -13,6 +13,6 @@ public class ShutdownAction : IBaseAction<object>
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             Process.Start("shutdown","/s /t 0");
         
-        return null;
+        return 0;
     }
 }
