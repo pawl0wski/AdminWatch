@@ -12,7 +12,8 @@ public static class DeviceObtainer
         {
             Id = Guid.NewGuid(),
             Name = await GetDeviceName(clientProxy),
-            Info = await DeviceInfoObtainer.GetFromClient(clientProxy)
+            Info = await DeviceInfoObtainer.GetFromClient(clientProxy),
+            CpuUtilizations = []
         };
         return device;
     }

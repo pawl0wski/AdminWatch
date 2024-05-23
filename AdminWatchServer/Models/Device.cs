@@ -22,6 +22,8 @@ public class Device
     [Required]
     public required DeviceInfo Info { get; set; }
 
+    public required List<DeviceCpuUtilization> CpuUtilizations { get; set; }
+
     public enum DeviceStatus
     {
         Disconnected,
