@@ -33,7 +33,7 @@ public class ConnectToServerMethodExecutor(AdminWatchContext context) : IBaseMet
 
     private async Task<Device> CreateNewDevice(ISingleClientProxy sender)
     {
-        var newDevice = await DeviceObtainer.FromClient(sender);
+        var newDevice = await DeviceObtainer.GetFromClient(sender);
         context.Devices.Add(newDevice);
         await context.SaveChangesAsync();
         return newDevice;
