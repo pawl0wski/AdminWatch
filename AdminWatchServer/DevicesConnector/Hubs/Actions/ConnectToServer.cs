@@ -9,18 +9,22 @@ public class ConnectToServerMethodExecutor(AdminWatchContext context) : IBaseMet
     public async Task<string> Execute(ISingleClientProxy sender, string stringDeviceId)
     {
         Device device;
+
         if (stringDeviceId == "")
-        {
             device = await CreateNewDevice(sender);
-        }
         else
-        {
-            var deviceId = Guid.Parse(stringDeviceId);
-            device = context.Devices.First(d => d.Id == deviceId);
-        }
+            device = GetExistingDevice(stringDeviceId);
+        
         device.Status = Device.DeviceStatus.Connected;
+        await context.SaveChangesAsync();
 
         return device.Id.ToString();
+    }
+
+    private Device GetExistingDevice(string stringDeviceId)
+    {
+        var deviceId = Guid.Parse(stringDeviceId);
+        return context.Devices.First(d => d.Id == deviceId);
     }
 
     private async Task<Device> CreateNewDevice(ISingleClientProxy sender)
