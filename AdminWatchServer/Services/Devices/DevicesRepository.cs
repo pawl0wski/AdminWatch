@@ -6,9 +6,10 @@ namespace AdminWatchServer.Services.Devices;
 public class DevicesRepository(AdminWatchContext context) : IDevicesRepository
 {
     public List<Device> GetAllDevices()
-    {
-        return context.Devices
+        => context.Devices
             .Include(dev => dev.Info)
             .ToList();
-    }
+
+    public List<Device> GetAllConnectedDevices()
+        => GetAllDevices().Where(d => d.IsConnected()).ToList();
 }

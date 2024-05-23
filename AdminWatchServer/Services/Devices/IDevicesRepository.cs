@@ -5,5 +5,7 @@ namespace AdminWatchServer.Services.Devices;
 public interface IDevicesRepository
 {
     public List<Device> GetAllDevices();
+
+    public List<Device> GetAllConnectedDevices();
 }
 

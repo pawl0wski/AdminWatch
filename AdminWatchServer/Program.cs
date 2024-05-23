@@ -16,6 +16,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
@@ -30,6 +31,8 @@ public class Program
 
        
         builder.Services.AddFluentUIComponents();
+        
+        builder.Services.AddHostedService<DeviceWatchWorker>();
 
         var app = builder.Build();
 
