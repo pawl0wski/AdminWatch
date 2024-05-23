@@ -15,7 +15,10 @@ public class Device
 
     [DefaultValue(DeviceStatus.Disconnected)]
     public DeviceStatus Status { get; set; }
-    
+
+    [MaxLength(22)]
+    public string? ConnectionId { get; set; }
+
     [Required]
     public required DeviceInfo Info { get; set; }
 
@@ -24,4 +27,7 @@ public class Device
         Disconnected,
         Connected
     }
+
+    public bool IsConnected()
+        => Status == DeviceStatus.Connected && ConnectionId is not null;
 }

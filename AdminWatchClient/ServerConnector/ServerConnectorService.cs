@@ -29,8 +29,7 @@ public class ServerConnectorService : IServerConnectorService
             throw new ConnectToServerFailException("Can't connect to AdminWatch server.");
         }
 
-        var id = await _connection.InvokeAsync<string>("ConnectToServer", "");
-        Console.WriteLine(id);
+        state.Id = await _connection.InvokeAsync<string>("ConnectToServer", "");
     }
 
 }

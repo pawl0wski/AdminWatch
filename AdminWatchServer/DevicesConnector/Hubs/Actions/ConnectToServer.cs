@@ -6,7 +6,10 @@ namespace AdminWatchServer.DevicesConnector.Hubs.Actions;
 
 public class ConnectToServerMethodExecutor(AdminWatchContext context) : IBaseMethodExecutor<string, string>
 {
-    public async Task<string> Execute(ISingleClientProxy sender, string stringDeviceId)
+    public async Task<string> Execute(
+        ISingleClientProxy sender,
+        HubCallerContext callerContext,
+        string stringDeviceId)
     {
         Device device;
 
@@ -16,6 +19,7 @@ public class ConnectToServerMethodExecutor(AdminWatchContext context) : IBaseMet
             device = GetExistingDevice(stringDeviceId);
         
         device.Status = Device.DeviceStatus.Connected;
+        device.ConnectionId = callerContext.ConnectionId;
         await context.SaveChangesAsync();
 
         return device.Id.ToString();

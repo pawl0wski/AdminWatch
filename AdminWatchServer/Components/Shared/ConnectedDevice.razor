@@ -1,43 +1,64 @@
 @using AdminWatchServer.Models
-<DashboardCard Width="15rem">
-    <DashboardCardContent>
-        <FluentStack Orientation="Orientation.Horizontal">
-            <FluentIcon
-                Value="@(new Icons.Regular.Size32.DesktopPulse())"/>
-            <h3>@Device.Name</h3>
-        </FluentStack>
-        <FluentStack Orientation="Orientation.Vertical">
-            <FluentStack 
-                Orientation="Orientation.Horizontal">
-                <FluentIcon Value="@(new Icons.Regular.Size20.Settings())" />
-                @Device.Info.Os
+<div style="opacity: @GetCardOpacity()">
+    <DashboardCard Width="15rem">
+        <DashboardCardContent>
+            <FluentStack Orientation="Orientation.Horizontal">
+                <FluentIcon
+                    Color="GetColor()"
+                    Value="@(new Icons.Regular.Size32.DesktopPulse())"/>
+                <h3>@Device.Name</h3>
             </FluentStack>
-            <FluentStack 
-                Orientation="Orientation.Horizontal">
-                <FluentIcon Value="@(new Icons.Regular.Size20.Wifi1())" />
-                @Device.Info.Ip
+            <FluentStack Orientation="Orientation.Vertical">
+                <FluentStack
+                    Orientation="Orientation.Horizontal">
+                    <FluentIcon
+                        Color="GetColor()"
+                        Value="@(new Icons.Regular.Size20.Settings())"/>
+                    @Device.Info.Os
+                </FluentStack>
+                <FluentStack
+                    Orientation="Orientation.Horizontal">
+                    <FluentIcon
+                        Color="GetColor()"
+                        Value="@(new Icons.Regular.Size20.Wifi1())"/>
+                    @Device.Info.Ip
+                </FluentStack>
             </FluentStack>
-        </FluentStack>
-    </DashboardCardContent>
-    <DashboardCardButtons>
-        <FluentButton
-            IconStart="@(new Icons.Regular.Size20.Open())">
-            Przejdź
-        </FluentButton>
-        <FluentButton
-            IconStart="@(new Icons.Regular.Size20.Power())">
-            Wyłącz
-        </FluentButton>
-    </DashboardCardButtons>
-</DashboardCard>
-
+        </DashboardCardContent>
+        <DashboardCardButtons>
+            <FluentButton 
+                Disabled="!Device.IsConnected()">
+                <FluentIcon 
+                    Slot="start"
+                    Color="@GetColor()"
+                    Value="@(new Icons.Regular.Size20.Open())" />
+                Przejdź
+            </FluentButton>
+            <FluentButton 
+                Disabled="!Device.IsConnected()">
+                <FluentIcon
+                    Slot="start"
+                    Color="@GetColor()"
+                    Value="@(new Icons.Regular.Size20.Power())" />
+                Wyłącz
+            </FluentButton>
+        </DashboardCardButtons>
+    </DashboardCard>
+</div>
 
 @code {
 
-    [Parameter] 
-    public required Device Device { get; set; }
+    [Parameter] public required Device Device { get; set; }
 
-    [Parameter] 
-    public required Action OnShutdown { get; set; }
+    [Parameter] public required Action OnShutdown { get; set; }
+
+    private Color GetColor()
+        => Device.IsConnected() ? Color.Accent : Color.Neutral;
+
+    private string GetCardOpacity()
+        => Device.IsConnected() ? "100%" : "40%";
+
+    private Appearance GetAppearance()
+        => Device.IsConnected() ? Appearance.Accent : Appearance.Neutral;
 
 }
