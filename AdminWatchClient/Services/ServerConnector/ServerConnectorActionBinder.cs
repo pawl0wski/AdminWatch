@@ -12,6 +12,12 @@ public static class ServerConnectorActionBinder
         BindGetName(ref connection);
         BindGetOperatingSystem(ref connection);
         BindGetCpuName(ref connection);
+        BindGetLocalIp(ref connection);
+    }
+
+    private static void BindGetLocalIp(ref HubConnection connection)
+    {
+        connection.On("GetLocalIp", new GetLocalIpAction().Execute);
     }
 
     private static void BindGetCpuName(ref HubConnection connection)

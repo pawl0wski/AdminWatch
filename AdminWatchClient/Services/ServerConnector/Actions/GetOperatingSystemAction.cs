@@ -4,12 +4,12 @@ namespace AdminWatchClient.Services.ServerConnector.Actions;
 
 public class GetOperatingSystemAction : IBaseAction<string>
 {
+    private readonly HardwareInfo _hardwareInfo = new();
     public string Execute()
     {
-        var hi = new HardwareInfo();
-        hi.RefreshOperatingSystem();
+        _hardwareInfo.RefreshOperatingSystem();
 
-        return hi.OperatingSystem.Name;
+        return _hardwareInfo.OperatingSystem.Name;
     }
 }
 

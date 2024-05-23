@@ -4,12 +4,13 @@ namespace AdminWatchClient.Services.ServerConnector.Actions;
 
 public class GetCpuName : IBaseAction<string>
 {
+    private readonly HardwareInfo _hardwareInfo = new();
+
     public string Execute()
     {
-        var hi = new HardwareInfo();
-        hi.RefreshCPUList();
+        _hardwareInfo.RefreshCPUList();
 
-        return hi.CpuList.First().Name;
+        return _hardwareInfo.CpuList.First().Name;
     }
 }
 
