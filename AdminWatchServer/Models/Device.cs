@@ -32,4 +32,10 @@ public class Device
 
     public bool IsConnected()
         => Status == DeviceStatus.Connected && ConnectionId is not null;
+
+    public void Disconnect()
+    {
+        Status = DeviceStatus.Disconnected;
+        ConnectionId = null;
+    }
 }

@@ -1,5 +1,4 @@
 using AdminWatchServer.DevicesConnector.Hubs.Actions;
-using AdminWatchServer.Models;
 using Microsoft.AspNetCore.SignalR;
 
 namespace AdminWatchServer.DevicesConnector.Hubs;
@@ -14,10 +13,9 @@ public class DevicesConnectorHub(AdminWatchContext context) : Hub
     {
         var device = context.Devices.First(d => d.ConnectionId == Context.ConnectionId);
         
-        device.Status = Device.DeviceStatus.Disconnected;
-        device.ConnectionId = null;
+        device.Disconnect();
         await context.SaveChangesAsync();
-
+        
         await base.OnDisconnectedAsync(exception);
     }
 }
