@@ -13,4 +13,8 @@ public interface IHardwareService
     public string GetProcessorName();
 
     public string GetLocalIp();
+
+    public string GetManufacturer();
+
+    public int GetBatteryStatus();
 }

@@ -18,7 +18,15 @@
         <DeviceInfoMonitorEntry
             Title="Pamięć fizyczna"
             Content="@GetTotalMemory()"
-            Icon="@(new Icons.Filled.Size20.Ram())"/>
+            Icon="@(new Icons.Filled.Size20.Ram())"/>        
+        <DeviceInfoMonitorEntry
+            Title="Producent"
+            Content="@DeviceInfo.Manufacturer"
+            Icon="@(new Icons.Filled.Size20.Building())"/>        
+        <DeviceInfoMonitorEntry
+            Title="Bateria"
+            Content="@DeviceInfo.Battery.ToString()"
+            Icon="@(new Icons.Filled.Size20.Battery0())"/>
     </table>
 </FluentCard>
 

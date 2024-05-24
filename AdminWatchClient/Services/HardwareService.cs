@@ -58,6 +58,22 @@ public class HardwareService : IHardwareService
         return addresses.First().ToString();
     }
 
+    public string GetManufacturer()
+    {
+        _hardwareInfo.RefreshBIOSList();
+        var bios = _hardwareInfo.BiosList.First();
+
+        return bios.Manufacturer;
+    }
+
+    public int GetBatteryStatus()
+    {
+        _hardwareInfo.RefreshBatteryList();
+        var battery = _hardwareInfo.BatteryList.First();
+
+        return battery.EstimatedChargeRemaining;
+    }
+
     private double ConvertToGb(ulong bytes)
         => Convert.ToDouble(bytes) / 1024 / 1024 / 1024;
 }

@@ -20,5 +20,7 @@ public class UpdateDeviceInfoSender(ConnectionState connectionState, IHardwareSe
             Os = hardwareService.GetOperatingSystem(),
             ProcessorName = hardwareService.GetProcessorName(),
             TotalMemory = hardwareService.GetTotalMemory(),
+            Manufacturer = hardwareService.GetManufacturer(),
+            Battery = hardwareService.GetBatteryStatus()
         };
 }

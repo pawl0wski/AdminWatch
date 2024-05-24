@@ -3,6 +3,7 @@ using System;
 using AdminWatchServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdminWatchServer.Migrations
 {
     [DbContext(typeof(AdminWatchContext))]
-    partial class AdminWatchContextModelSnapshot : ModelSnapshot
+    [Migration("20240524220746_AdditionalDeviceInfo")]
+    partial class AdditionalDeviceInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.5");
@@ -140,10 +143,6 @@ namespace AdminWatchServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Battery")
-                        .HasMaxLength(128)
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Ip")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -160,6 +159,11 @@ namespace AdminWatchServer.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProcessorName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SerialNumber")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("TEXT");

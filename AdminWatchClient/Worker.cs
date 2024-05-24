@@ -7,21 +7,35 @@ public class Worker(ILogger<Worker> logger, IServerConnector serverConnector) : 
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var deviceInfoUpdateIndicator = 0;
         await ConnectServerService();
         logger.LogInformation("Connected to Server.");
         
-        await serverConnector.UpdateDeviceInfo();
-        logger.LogInformation("Sent information about device to server.");
         while (!stoppingToken.IsCancellationRequested)
         {
+            await TryToUpdateDeviceInfo(ref deviceInfoUpdateIndicator);
+            
             await serverConnector.AddDeviceCpuUtilization();
             await serverConnector.AddDeviceMemoryOccupy();
             logger.LogInformation("Sent information about CPU and RAM utilization.");
             
+            deviceInfoUpdateIndicator++;
             await Task.Delay(3000, stoppingToken);
         }
     }
-    
+
+    private Task TryToUpdateDeviceInfo(ref int deviceInfoUpdateIndicator)
+    {
+        deviceInfoUpdateIndicator %= 10;
+
+        if (deviceInfoUpdateIndicator == 0)
+        {
+            logger.LogInformation("Updating device info.");
+            return serverConnector.UpdateDeviceInfo();
+        }
+        return Task.CompletedTask;
+    }
+
     private async Task ConnectServerService()
     {
         try
