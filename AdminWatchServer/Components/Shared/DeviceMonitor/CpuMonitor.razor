@@ -3,6 +3,7 @@
 
 <FluentCard Height="20rem" Width="50%">
     <ApexChart
+        @ref="_chart"
         Height="@("100%")"
         TItem="DeviceCpuUtilization"
         XAxisType="XAxisType.Datetime"
@@ -22,10 +23,18 @@
 
 @code {
     [Parameter] 
-    public required List<DeviceCpuUtilization> CpuUtilizations { get; set; }
+    public required IEnumerable<DeviceCpuUtilization> CpuUtilizations { get; set; }
 
     private ApexChartOptions<DeviceCpuUtilization> _options = new();
 
+    private ApexChart<DeviceCpuUtilization>? _chart;
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_chart is not null)
+            await _chart.UpdateSeriesAsync();
+    } 
+    
     protected override void OnInitialized()
     {
         _options.Yaxis =
@@ -36,7 +45,17 @@
                 Max = 100
             }
         ];
-        base.OnInitialized();
+
+        _options.Stroke = new Stroke
+        {
+            Curve = [Curve.Smooth]
+        };
+        
+        _options.Chart = new Chart
+        {
+            Toolbar = new Toolbar { Show = false }
+        };
+        
     }
 
 }

@@ -12,9 +12,13 @@ public static class DeviceInfoObtainer
             Os = await GetOperatingSystem(clientProxy),
             Ip = await GetLocalIp(clientProxy),
             ProcessorName = await GetCpuName(clientProxy),
+            TotalMemory = await GetTotalMemory(clientProxy),
             MacAdress = "TODO"
         };
     }
+
+    private static Task<double> GetTotalMemory(ISingleClientProxy clientProxy, CancellationToken? cancellationToken = null)
+        => clientProxy.InvokeAsync<double>("GetTotalMemory", cancellationToken ?? new CancellationToken());
 
     public static async Task UpdateFromClient(ISingleClientProxy client, DeviceInfo deviceInfo)
     {

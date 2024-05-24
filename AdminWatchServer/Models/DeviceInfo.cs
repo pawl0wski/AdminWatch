@@ -23,4 +23,7 @@ public class DeviceInfo
     [MaxLength(255)]
     public required string ProcessorName { get; set; }
 
+    [Required] 
+    public required double TotalMemory { get; set; }
+
 }

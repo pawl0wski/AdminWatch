@@ -27,11 +27,11 @@
         </DashboardCardContent>
         <DashboardCardButtons>
             <FluentButton 
+                OnClick="OnEnterMonitor"
                 Disabled="!Device.IsConnected()">
                 <FluentIcon 
                     Slot="start"
                     Color="@GetColor()"
-                    OnClick="OnEnterMonitor"
                     Value="@(new Icons.Regular.Size20.Open())" />
                 Przejdź
             </FluentButton>

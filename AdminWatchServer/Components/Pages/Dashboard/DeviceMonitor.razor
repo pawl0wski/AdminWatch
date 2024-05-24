@@ -1,24 +1,58 @@
 @page "/dashboard/device/{DeviceId:guid}"
 @rendermode InteractiveServer
+@using System.Timers
 @using AdminWatchServer.Services.Devices
 @using AdminWatchServer.Components.Shared.DeviceMonitor
+@using AdminWatchServer.Models
 
+@implements IDisposable
 @inject IDevicesRepository DevicesRepository;
 @layout DashboardLayout;
-    
-<FluentStack>
-    <CpuMonitor 
-        CpuUtilizations="DevicesRepository.GetLastCpuUtilization(DeviceId)" />
 
-    <RamMonitor
-        MemoryOccupies="DevicesRepository.GetLastMemoryOccupies(DeviceId)"
-        />
+@if (_device is not null)
+{
+    <FluentStack>
+        <CpuMonitor
+            CpuUtilizations="@_device.CpuUtilizations.TakeLast(15)"/>
 
-</FluentStack>
+        <RamMonitor
+            TotalMemory="_device.Info.TotalMemory"
+            MemoryOccupies="@_device.MemoryOccupies.TakeLast(15)"/>
+
+    </FluentStack>
+}
 
 @code {
 
-    [Parameter]
-    public required Guid DeviceId { get; set; }
+    [Parameter] public required Guid DeviceId { get; set; }
+
+    private Device? _device;
+
+    private Timer? _deviceUpdater;
+
+    protected override void OnInitialized()
+    {
+        UpdateDevice();
+        _deviceUpdater = new Timer(TimeSpan.FromSeconds(5));
+        _deviceUpdater.Elapsed += OnDeviceUpdaterTick;
+        _deviceUpdater.Start();
+    }
+
+    private async void OnDeviceUpdaterTick(object? sender, ElapsedEventArgs e)
+    {
+        await InvokeAsync(UpdateDevice);
+    }
+
+    private void UpdateDevice()
+    {
+        _device = DevicesRepository.GetDevice(DeviceId);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        _deviceUpdater?.Stop();
+        _deviceUpdater?.Dispose();
+    }
 
 }

@@ -8,17 +8,16 @@ public static class DeviceMemoryOccupyObtainer
     public static async Task<DeviceMemoryOccupy> GetFromClient(ISingleClientProxy client)
     {
 
-        var memoryData = await GetOccupiedMemory(client);
+        var occupiedMemory = await GetOccupiedMemory(client);
         
         return new DeviceMemoryOccupy
         {
-            OccupiedMemory = memoryData.First(),
-            TotalMemory = memoryData.Last(),
+            OccupiedMemory = occupiedMemory,
             MeasureTime = DateTime.Now
         };
     }
 
-    private static Task<double[]> GetOccupiedMemory(ISingleClientProxy client,
+    private static Task<double> GetOccupiedMemory(ISingleClientProxy client,
         CancellationToken? cancellationToken = null)
-        => client.InvokeAsync<double[]>("GetOccupiedMemory", cancellationToken ?? new CancellationToken());
+        => client.InvokeAsync<double>("GetOccupiedMemory", cancellationToken ?? new CancellationToken());
 }

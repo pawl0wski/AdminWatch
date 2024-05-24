@@ -10,8 +10,5 @@ public class DeviceMemoryOccupy
     public required double OccupiedMemory { get; set; }
 
     [Required]
-    public required double TotalMemory { get; set; }
-
-    [Required]
     public required DateTime MeasureTime { get; set; }
 }

@@ -12,7 +12,7 @@
 <h1 class="dashboard_title">Podłączone urządzenia</h1>
 
 <FluentStack Wrap="true" HorizontalGap="20" VerticalGap="20">
-    @foreach (var device in DevicesRepository.GetAllDevices())
+    @foreach (var device in DevicesRepository.GetAllDevicesWithoutMeasures())
     {
         <ConnectedDevice
             OnShutdown="OnShutdownClick"
@@ -31,6 +31,7 @@
 
     private void OnMonitorRedirect(Device device)
     {
+        Console.WriteLine("REDIRECT!");
         Navigator.NavigateTo($"/dashboard/device/{device.Id}");
     }
 

@@ -15,6 +15,12 @@ public static class ServerConnectorMethodExecutorBinder
         BindGetLocalIp(ref connection);
         BindCpuUtilization(ref connection);
         BindOccupiedMemory(ref connection);
+        BindTotalMemory(ref connection);
+    }
+
+    private static void BindTotalMemory(ref HubConnection connection)
+    {
+        connection.On("GetTotalMemory", new GetTotalMemoryMethodExecutor().Execute);
     }
 
     private static void BindOccupiedMemory(ref HubConnection connection)

@@ -3,10 +3,11 @@
 
 <FluentCard Height="20rem" Width="50%">
     <ApexChart
+        @ref="_chart"
         Height="@("100%")"
         TItem="DeviceMemoryOccupy"
         XAxisType="XAxisType.Datetime"
-        Options="Options"
+        Options="_options"
         Title="Użycie RAM">
 
         <ApexPointSeries
@@ -15,28 +16,48 @@
             Name="Użycie RAM (GiB)"
             SeriesType="@SeriesType.Area"
             XValue="@(memoryOccup => memoryOccup.MeasureTime)"
-            YValue="@(memoryOccup => (decimal)memoryOccup.OccupiedMemory)"></ApexPointSeries>
+            YValue="@(memoryOccup => (decimal)memoryOccup.OccupiedMemory)">
+        </ApexPointSeries>
 
     </ApexChart>
 </FluentCard>
 
 @code {
 
-    [Parameter]
-    public required List<DeviceMemoryOccupy> MemoryOccupies { get; set; }
+    [Parameter] public required IEnumerable<DeviceMemoryOccupy> MemoryOccupies { get; set; }
 
-    private ApexChartOptions<DeviceMemoryOccupy> Options { get; set; } = new();
+    [Parameter] public required double TotalMemory { get; set; }
+
+    private ApexChartOptions<DeviceMemoryOccupy> _options = new();
+
+    private ApexChart<DeviceMemoryOccupy>? _chart;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_chart is not null)
+            await _chart.UpdateSeriesAsync();
+    }
 
     protected override void OnInitialized()
     {
-        Options.Yaxis =
+        _options.Yaxis =
         [
             new YAxis
             {
-                Max = 500,
+                Max = TotalMemory,
                 Min = 0
             }
         ];
+
+        _options.Stroke = new Stroke
+        {
+            Curve = [Curve.Stepline]
+        };
+
+        _options.Chart = new Chart
+        {
+            Toolbar = new Toolbar { Show = false }
+        };
     }
 
 }
