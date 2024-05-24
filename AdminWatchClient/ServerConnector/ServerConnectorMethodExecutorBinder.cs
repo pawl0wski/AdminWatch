@@ -14,11 +14,17 @@ public static class ServerConnectorMethodExecutorBinder
         BindGetCpuName(ref connection);
         BindGetLocalIp(ref connection);
         BindCpuUtilization(ref connection);
+        BingOccupiedMemory(ref connection);
+    }
+
+    private static void BingOccupiedMemory(ref HubConnection connection)
+    {
+        connection.On("GetOccupiedMemory", new GetOccupiedMemoryMethodExecutor().Execute);
     }
 
     private static void BindCpuUtilization(ref HubConnection connection)
     {
-        connection.On("GetCpuUtilization", new GetCpuUtilization().Execute);
+        connection.On("GetCpuUtilization", new GetCpuUtilizationMethodExecutor().Execute);
     }
 
     private static void BindGetLocalIp(ref HubConnection connection)

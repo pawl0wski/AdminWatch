@@ -2,10 +2,10 @@ using Hardware.Info;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class GetCpuUtilization 
+public class GetCpuUtilizationMethodExecutor 
     : IBaseMethodExecutor<int>
 {
-    private HardwareInfo _hardwareInfo = new();
+    private readonly HardwareInfo _hardwareInfo = new();
     
     public int Execute()
     {
