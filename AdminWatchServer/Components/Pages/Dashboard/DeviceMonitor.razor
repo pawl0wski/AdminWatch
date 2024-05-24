@@ -11,15 +11,21 @@
 
 @if (_device is not null)
 {
-    <FluentStack>
-        <CpuMonitor
-            CpuUtilizations="@_device.CpuUtilizations.TakeLast(15)"/>
-
-        <RamMonitor
-            TotalMemory="_device.Info.TotalMemory"
-            MemoryOccupies="@_device.MemoryOccupies.TakeLast(15)"/>
-
-    </FluentStack>
+    <FluentGrid>
+        <FluentGridItem sm="12" md="6">
+            <CpuMonitor
+                CpuUtilizations="@_device.CpuUtilizations.TakeLast(15)"/>
+        </FluentGridItem>
+        <FluentGridItem sm="12" md="6">
+            <MemoryMonitor
+                TotalMemory="_device.Info.TotalMemory"
+                MemoryOccupies="@_device.MemoryOccupies.TakeLast(15)"/>
+        </FluentGridItem>
+        <FluentGridItem sm="12" md="6">
+            <DeviceInfoMonitor 
+                DeviceInfo="_device.Info" />
+        </FluentGridItem>
+    </FluentGrid>
 }
 
 @code {

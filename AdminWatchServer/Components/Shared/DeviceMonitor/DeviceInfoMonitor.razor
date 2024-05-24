@@ -1,0 +1,33 @@
+@using AdminWatchServer.Models
+
+<FluentCard>
+    <h4>Informacje o urządzeniu</h4>
+    <table width="100%">
+        <DeviceInfoMonitorEntry
+            Title="System operacyjny"
+            Content="@DeviceInfo.Os"
+            Icon="@(new Icons.Filled.Size20.Cube())"/>
+        <DeviceInfoMonitorEntry
+            Title="Adres IP"
+            Content="@DeviceInfo.Ip"
+            Icon="@(new Icons.Filled.Size20.PlugConnected())"/>
+        <DeviceInfoMonitorEntry
+            Title="Nazwa procesora"
+            Content="@DeviceInfo.ProcessorName"
+            Icon="@(new Icons.Filled.Size20.DeveloperBoard())"/>
+        <DeviceInfoMonitorEntry
+            Title="Pamięć fizyczna"
+            Content="@GetTotalMemory()"
+            Icon="@(new Icons.Filled.Size20.Ram())"/>
+    </table>
+</FluentCard>
+
+@code {
+
+    [Parameter] public required DeviceInfo DeviceInfo { get; set; }
+
+
+    private string GetTotalMemory()
+        => $"{DeviceInfo.TotalMemory} GiB";
+
+}

@@ -23,6 +23,7 @@ public class ConnectionState
     {
         var configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var appConfigPath = Path.Join(configPath, "/AdminWatch/ClientState.json");
+        Directory.CreateDirectory(appConfigPath);
         return appConfigPath;
     }
     public void Save()

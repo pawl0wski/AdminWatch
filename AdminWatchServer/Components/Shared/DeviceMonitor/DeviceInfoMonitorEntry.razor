@@ -1,0 +1,27 @@
+<tr class="device_info_entry">
+    <td width="2rem">
+        <FluentStack
+            VerticalAlignment="VerticalAlignment.Center"
+            HorizontalAlignment="HorizontalAlignment.Center">
+            <FluentIcon Value="Icon"  />
+        </FluentStack>
+    </td>
+    <td>
+        <b>@Title</b>
+    </td>
+    <td>
+        @Content
+    </td>
+</tr>
+
+@code {
+
+    [Parameter] 
+    public required string Title { get; set; }
+    
+    [Parameter] 
+    public required string Content { get; set; }
+
+    [Parameter] 
+    public required Icon Icon { get; set; }
+}
