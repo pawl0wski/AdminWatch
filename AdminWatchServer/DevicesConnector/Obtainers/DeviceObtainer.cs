@@ -1,6 +1,5 @@
 using AdminWatchServer.Models;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace AdminWatchServer.DevicesConnector.Obtainers;
 
@@ -13,7 +12,6 @@ public static class DeviceObtainer
             Id = Guid.NewGuid(),
             Name = await GetDeviceName(clientProxy),
             Info = await DeviceInfoObtainer.GetFromClient(clientProxy),
-            CpuUtilizations = []
         };
         return device;
     }

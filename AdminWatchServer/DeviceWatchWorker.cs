@@ -51,6 +51,15 @@ public class DeviceWatchWorker(
         await DeviceObtainer.UpdateFromClient(deviceClient, device);
 
         await AddNewCpuUtilization(device, deviceClient);
+
+        await AddNewMemoryOccupy(device, deviceClient);
+    }
+
+    private async Task AddNewMemoryOccupy(Device device, ISingleClientProxy deviceClient)
+    {
+        var currentMemoryOccupy =
+            await DeviceMemoryOccupyObtainer.GetFromClient(deviceClient);
+        device.MemoryOccupies.Add(currentMemoryOccupy);
     }
 
     private async Task AddNewCpuUtilization(Device device, ISingleClientProxy deviceClient)

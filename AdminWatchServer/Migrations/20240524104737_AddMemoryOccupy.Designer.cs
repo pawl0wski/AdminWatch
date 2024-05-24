@@ -3,6 +3,7 @@ using System;
 using AdminWatchServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdminWatchServer.Migrations
 {
     [DbContext(typeof(AdminWatchContext))]
-    partial class AdminWatchContextModelSnapshot : ModelSnapshot
+    [Migration("20240524104737_AddMemoryOccupy")]
+    partial class AddMemoryOccupy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.5");
@@ -177,11 +180,11 @@ namespace AdminWatchServer.Migrations
                     b.Property<DateTime>("MeasureTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("OccupiedMemory")
-                        .HasColumnType("REAL");
+                    b.Property<int>("OccupiedMemory")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("TotalMemory")
-                        .HasColumnType("REAL");
+                    b.Property<int>("TotalMemory")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
