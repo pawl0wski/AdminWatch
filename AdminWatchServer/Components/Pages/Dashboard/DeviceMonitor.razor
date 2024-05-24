@@ -33,7 +33,7 @@
     protected override void OnInitialized()
     {
         UpdateDevice();
-        _deviceUpdater = new Timer(TimeSpan.FromSeconds(5));
+        _deviceUpdater = new Timer(TimeSpan.FromSeconds(3));
         _deviceUpdater.Elapsed += OnDeviceUpdaterTick;
         _deviceUpdater.Start();
     }

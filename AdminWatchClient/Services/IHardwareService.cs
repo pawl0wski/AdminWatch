@@ -10,5 +10,7 @@ public interface IHardwareService
 
     public double GetTotalMemory();
 
-    public string GetCpuName();
+    public string GetProcessorName();
+
+    public string GetLocalIp();
 }

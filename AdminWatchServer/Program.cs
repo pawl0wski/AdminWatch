@@ -1,5 +1,5 @@
 using AdminWatchServer.Components;
-using AdminWatchServer.DevicesConnector.Hubs;
+using AdminWatchServer.DevicesConnector;
 using AdminWatchServer.Models;
 using AdminWatchServer.Services.Auth;
 using AdminWatchServer.Services.Devices;
@@ -32,8 +32,6 @@ public class Program
        
         builder.Services.AddFluentUIComponents();
         
-        builder.Services.AddHostedService<DeviceWatchWorker>();
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

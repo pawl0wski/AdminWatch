@@ -14,7 +14,8 @@ public class Device
 
     [MaxLength(22)] public string? ConnectionId { get; set; }
 
-    [Required] public required DeviceInfo Info { get; set; }
+    [Required] 
+    public required DeviceInfo Info { get; set; }
 
     public List<DeviceCpuUtilization> CpuUtilizations { get; set; } = [];
 

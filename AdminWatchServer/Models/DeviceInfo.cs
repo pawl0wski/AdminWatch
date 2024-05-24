@@ -7,23 +7,15 @@ public class DeviceInfo
     [Required]
     public int Id { get; set; }
 
-    [Required]
-    [MaxLength(64)]
-    public required string Os { get; set; }
+    [MaxLength(64)] 
+    public string Os { get; set; } = "";
 
-    [Required]
-    [MaxLength(15)]
-    public required string Ip { get; set; }
+    [MaxLength(15)] 
+    public string Ip { get; set; } = "";
 
-    [Required]
-    [MaxLength(11)] 
-    public required string MacAdress { get; set; }
-
-    [Required]
     [MaxLength(255)]
-    public required string ProcessorName { get; set; }
+    public string ProcessorName { get; set; } = "";
 
-    [Required] 
-    public required double TotalMemory { get; set; }
+    public double TotalMemory { get; set; } = 0;
 
 }

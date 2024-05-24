@@ -6,9 +6,15 @@ public class Worker(ILogger<Worker> logger, IServerConnector serverConnector) : 
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        await serverConnector.UpdateDeviceInfo();
+        logger.LogInformation("Sent information about device to server.");
         while (!stoppingToken.IsCancellationRequested)
         {
-            await Task.Delay(1000, stoppingToken);
+            await serverConnector.AddDeviceCpuUtilization();
+            await serverConnector.AddDeviceMemoryOccupy();
+            logger.LogInformation("Sent information about CPU and RAM utilization");
+            
+            await Task.Delay(3000, stoppingToken);
         }
     }
 }

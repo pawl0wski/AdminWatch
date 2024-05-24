@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using Hardware.Info;
 
 namespace AdminWatchClient.Services;
@@ -43,13 +44,20 @@ public class HardwareService : IHardwareService
 
         return Math.Round(ConvertToGb(totalMemory), 2);    }
 
-    public string GetCpuName()
+    public string GetProcessorName()
     {
         _hardwareInfo.RefreshCPUList();
         
         return _hardwareInfo.CpuList.First().Name;
     }
-    
+
+    public string GetLocalIp()
+    {
+        var addresses =
+            HardwareInfo.GetLocalIPv4Addresses(NetworkInterfaceType.Ethernet, OperationalStatus.Up);
+        return addresses.First().ToString();
+    }
+
     private double ConvertToGb(ulong bytes)
         => Convert.ToDouble(bytes) / 1024 / 1024 / 1024;
 }

@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class ShutdownMethodExecutor : IBaseMethodExecutor<int>
+public class ShutdownMethodExecutor : BaseMethodExecutor<int>
 {
-    public int Execute()
+    public override int Execute()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             Process.Start("shutdown", "now");
