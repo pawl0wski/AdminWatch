@@ -18,16 +18,17 @@ public class ConnectionState
             return new ConnectionState();
         }
     }
-
-    private static  string GetConfigFilePath()
-    {
-        var configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var appConfigPath = Path.Join(configPath, "/AdminWatch/ClientState.json");
-        Directory.CreateDirectory(appConfigPath);
-        return appConfigPath;
-    }
     public void Save()
     {
         File.WriteAllText(GetConfigFilePath(), JsonSerializer.Serialize(this));
     }
+    private static  string GetConfigFilePath()
+    {
+        var configPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var appConfigDirPath = Path.Join(configPath, "/AdminWatch");
+        Directory.CreateDirectory(appConfigDirPath);
+        var appConfigPath = Path.Join(appConfigDirPath, "ClientState.json");
+        return appConfigPath;
+    }
+
 }
