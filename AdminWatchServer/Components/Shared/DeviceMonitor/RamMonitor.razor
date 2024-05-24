@@ -1,0 +1,42 @@
+@using AdminWatchServer.Models
+@using ApexCharts
+
+<FluentCard Height="20rem" Width="50%">
+    <ApexChart
+        Height="@("100%")"
+        TItem="DeviceMemoryOccupy"
+        XAxisType="XAxisType.Datetime"
+        Options="Options"
+        Title="Użycie RAM">
+
+        <ApexPointSeries
+            TItem="DeviceMemoryOccupy"
+            Items="MemoryOccupies"
+            Name="Użycie RAM (GiB)"
+            SeriesType="@SeriesType.Area"
+            XValue="@(memoryOccup => memoryOccup.MeasureTime)"
+            YValue="@(memoryOccup => (decimal)memoryOccup.OccupiedMemory)"></ApexPointSeries>
+
+    </ApexChart>
+</FluentCard>
+
+@code {
+
+    [Parameter]
+    public required List<DeviceMemoryOccupy> MemoryOccupies { get; set; }
+
+    private ApexChartOptions<DeviceMemoryOccupy> Options { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        Options.Yaxis =
+        [
+            new YAxis
+            {
+                Max = 500,
+                Min = 0
+            }
+        ];
+    }
+
+}

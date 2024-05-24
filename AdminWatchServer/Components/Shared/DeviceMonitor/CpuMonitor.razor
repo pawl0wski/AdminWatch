@@ -1,0 +1,42 @@
+@using AdminWatchServer.Models
+@using ApexCharts
+
+<FluentCard Height="20rem" Width="50%">
+    <ApexChart
+        Height="@("100%")"
+        TItem="DeviceCpuUtilization"
+        XAxisType="XAxisType.Datetime"
+        Options="_options"
+        Title="Użycie CPU">
+
+        <ApexPointSeries
+            TItem="DeviceCpuUtilization"
+            Items="CpuUtilizations"
+            Name="Użycie CPU (%)"
+            SeriesType="@SeriesType.Area"
+            XValue="@(utilization => utilization.MeasureTime)"
+            YValue="@(utilization => utilization.Utilization)"></ApexPointSeries>
+
+    </ApexChart>
+</FluentCard>
+
+@code {
+    [Parameter] 
+    public required List<DeviceCpuUtilization> CpuUtilizations { get; set; }
+
+    private ApexChartOptions<DeviceCpuUtilization> _options = new();
+
+    protected override void OnInitialized()
+    {
+        _options.Yaxis =
+        [
+            new YAxis
+            {
+                Min = 0,
+                Max = 100
+            }
+        ];
+        base.OnInitialized();
+    }
+
+}

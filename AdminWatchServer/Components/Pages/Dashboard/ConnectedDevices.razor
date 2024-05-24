@@ -1,9 +1,11 @@
 @page "/dashboard"
 @rendermode InteractiveServer
+@using AdminWatchServer.Models
 @using AdminWatchServer.Services.Devices
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 @inject IDevicesRepository DevicesRepository;
+@inject NavigationManager Navigator;
 
 @layout DashboardLayout
 
@@ -14,6 +16,7 @@
     {
         <ConnectedDevice
             OnShutdown="OnShutdownClick"
+            OnEnterMonitor="@(() => OnMonitorRedirect(device))"
             Device="device" />
     }
 </FluentStack>
@@ -24,6 +27,11 @@
     private void OnShutdownClick()
     {
         Console.WriteLine("Hello!");
+    }
+
+    private void OnMonitorRedirect(Device device)
+    {
+        Navigator.NavigateTo($"/dashboard/device/{device.Id}");
     }
 
 }

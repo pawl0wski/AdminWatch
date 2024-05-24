@@ -1,0 +1,24 @@
+@page "/dashboard/device/{DeviceId:guid}"
+@rendermode InteractiveServer
+@using AdminWatchServer.Services.Devices
+@using AdminWatchServer.Components.Shared.DeviceMonitor
+
+@inject IDevicesRepository DevicesRepository;
+@layout DashboardLayout;
+    
+<FluentStack>
+    <CpuMonitor 
+        CpuUtilizations="DevicesRepository.GetLastCpuUtilization(DeviceId)" />
+
+    <RamMonitor
+        MemoryOccupies="DevicesRepository.GetLastMemoryOccupies(DeviceId)"
+        />
+
+</FluentStack>
+
+@code {
+
+    [Parameter]
+    public required Guid DeviceId { get; set; }
+
+}
