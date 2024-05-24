@@ -1,6 +1,6 @@
 namespace AdminWatchClient.ServerConnector;
 
-public interface IServerConnectorService
+public interface IServerConnector
 {
     public Task Connect();
 }

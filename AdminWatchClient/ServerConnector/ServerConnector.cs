@@ -1,22 +1,23 @@
 using AdminWatchClient.ServerConnector.Exceptions;
+using AdminWatchClient.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace AdminWatchClient.ServerConnector;
 
-public class ServerConnectorService : IServerConnectorService
+public class ServerConnector : IServerConnector
 {
     private ConnectionState state = new();
     
     private readonly HubConnection _connection;
 
-    public ServerConnectorService(IConfiguration config)
+    public ServerConnector(IConfiguration config, IHardwareService hardwareService)
     {
         var serverIpAndPort = config.GetValue<string>("ip");
         _connection = new HubConnectionBuilder()
             .WithUrl($"http://{serverIpAndPort}/DevicesConnector")
             .Build();
 
-        ServerConnectorMethodExecutorBinder.BindAllActions(ref _connection, state);
+        ServerConnectorMethodExecutorBinder.BindAllActions(ref _connection, hardwareService);
     }
 
     public async Task Connect()

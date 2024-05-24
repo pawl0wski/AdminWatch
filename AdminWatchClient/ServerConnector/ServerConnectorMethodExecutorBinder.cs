@@ -1,4 +1,5 @@
 using AdminWatchClient.ServerConnector.Actions;
+using AdminWatchClient.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace AdminWatchClient.ServerConnector;
@@ -6,31 +7,31 @@ namespace AdminWatchClient.ServerConnector;
 public static class ServerConnectorMethodExecutorBinder
 {
     
-    public static void BindAllActions(ref HubConnection connection, ConnectionState state)
+    public static void BindAllActions(ref HubConnection connection, IHardwareService service)
     {
         BindShutdown(ref connection);
         BindGetName(ref connection);
-        BindGetOperatingSystem(ref connection);
-        BindGetCpuName(ref connection);
+        BindGetOperatingSystem(ref connection, service);
+        BindGetCpuName(ref connection, service);
         BindGetLocalIp(ref connection);
-        BindCpuUtilization(ref connection);
-        BindOccupiedMemory(ref connection);
-        BindTotalMemory(ref connection);
+        BindCpuUtilization(ref connection, service);
+        BindOccupiedMemory(ref connection, service);
+        BindTotalMemory(ref connection, service);
     }
 
-    private static void BindTotalMemory(ref HubConnection connection)
+    private static void BindTotalMemory(ref HubConnection connection, IHardwareService service)
     {
-        connection.On("GetTotalMemory", new GetTotalMemoryMethodExecutor().Execute);
+        connection.On("GetTotalMemory", new GetTotalMemoryMethodExecutor(service).Execute);
     }
 
-    private static void BindOccupiedMemory(ref HubConnection connection)
+    private static void BindOccupiedMemory(ref HubConnection connection, IHardwareService service)
     {
-        connection.On("GetOccupiedMemory", new GetOccupiedMemoryMethodExecutor().Execute);
+        connection.On("GetOccupiedMemory", new GetOccupiedMemoryMethodExecutor(service).Execute);
     }
 
-    private static void BindCpuUtilization(ref HubConnection connection)
+    private static void BindCpuUtilization(ref HubConnection connection, IHardwareService service)
     {
-        connection.On("GetCpuUtilization", new GetCpuUtilizationMethodExecutor().Execute);
+        connection.On("GetCpuUtilization", new GetCpuUtilizationMethodExecutor(service).Execute);
     }
 
     private static void BindGetLocalIp(ref HubConnection connection)
@@ -38,14 +39,14 @@ public static class ServerConnectorMethodExecutorBinder
         connection.On("GetLocalIp", new GetLocalIpMethodExecutor().Execute);
     }
 
-    private static void BindGetCpuName(ref HubConnection connection)
+    private static void BindGetCpuName(ref HubConnection connection, IHardwareService service)
     {
-        connection.On("GetCpuName", new GetCpuName().Execute);
+        connection.On("GetCpuName", new GetCpuName(service).Execute);
     }
 
-    private static void BindGetOperatingSystem(ref HubConnection connection)
+    private static void BindGetOperatingSystem(ref HubConnection connection, IHardwareService service)
     {
-        connection.On("GetOperatingSystem", new GetOperatingSystemMethodExecutor().Execute);
+        connection.On("GetOperatingSystem", new GetOperatingSystemMethodExecutor(service).Execute);
     }
 
     private static void BindShutdown(ref HubConnection connection)

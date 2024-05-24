@@ -1,15 +1,11 @@
-using Hardware.Info;
+using AdminWatchClient.Services;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class GetOperatingSystemMethodExecutor : IBaseMethodExecutor<string>
+public class GetOperatingSystemMethodExecutor(IHardwareService hardwareService)
+    : IBaseMethodExecutor<string>
 {
-    private readonly HardwareInfo _hardwareInfo = new();
     public string Execute()
-    {
-        _hardwareInfo.RefreshOperatingSystem();
-
-        return _hardwareInfo.OperatingSystem.Name;
-    }
+        => hardwareService.GetOperatingSystem();
 }
 

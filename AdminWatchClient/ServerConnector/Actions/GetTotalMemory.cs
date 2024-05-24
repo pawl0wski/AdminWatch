@@ -1,20 +1,10 @@
-using Hardware.Info;
+using AdminWatchClient.Services;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class GetTotalMemoryMethodExecutor : IBaseMethodExecutor<double>
+public class GetTotalMemoryMethodExecutor(IHardwareService hardwareService)
+    : IBaseMethodExecutor<double>
 {
-    private readonly HardwareInfo _hardwareInfo = new();
-    
     public double Execute()
-    {
-        _hardwareInfo.RefreshMemoryStatus();
-
-        var totalMemory = _hardwareInfo.MemoryStatus.TotalPhysical;
-
-        return Math.Round(ConvertToGb(totalMemory), 2);
-    }
-    
-    private double ConvertToGb(ulong bytes)
-        => Convert.ToDouble(bytes) / 1024 / 1024 / 1024;
+        => hardwareService.GetTotalMemory();
 }

@@ -1,16 +1,10 @@
-using Hardware.Info;
+using AdminWatchClient.Services;
 
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public class GetCpuName : IBaseMethodExecutor<string>
+public class GetCpuName(IHardwareService hardwareService) : IBaseMethodExecutor<string>
 {
-    private readonly HardwareInfo _hardwareInfo = new();
-
-    public string Execute()
-    {
-        _hardwareInfo.RefreshCPUList();
-
-        return _hardwareInfo.CpuList.First().Name;
-    }
+    public string Execute() 
+        => hardwareService.GetCpuName();
 }
 

@@ -3,7 +3,6 @@ using AdminWatchServer.DevicesConnector.Obtainers;
 using AdminWatchServer.Models;
 using AdminWatchServer.Services.Devices;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdminWatchServer;
 

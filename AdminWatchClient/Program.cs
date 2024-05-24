@@ -1,5 +1,6 @@
 using AdminWatchClient.ServerConnector;
 using AdminWatchClient.ServerConnector.Exceptions;
+using AdminWatchClient.Services;
 
 namespace AdminWatchClient;
 
@@ -11,10 +12,12 @@ public static class Program
             PrintHelp();
         
         var builder = Host.CreateApplicationBuilder(args);
-        builder.Services.AddHostedService<Worker>();
 
+        builder.Services.AddSingleton<IHardwareService, HardwareService>();
         
-        builder.Services.AddSingleton<IServerConnectorService, ServerConnectorService>();
+        builder.Services.AddHostedService<Worker>();
+        
+        builder.Services.AddSingleton<IServerConnector, ServerConnector.ServerConnector>();
         
         var host = builder.Build();
 
@@ -34,16 +37,16 @@ public static class Program
     private static async Task ConfigureServerConnector(IHost host)
     {
         using var scope = host.Services.CreateScope();
-        var service = scope.ServiceProvider.GetRequiredService<IServerConnectorService>();
+        var service = scope.ServiceProvider.GetRequiredService<IServerConnector>();
 
         await ConnectServerService(service);
     }
 
-    private static async Task ConnectServerService(IServerConnectorService connectorService)
+    private static async Task ConnectServerService(IServerConnector connector)
     {
         try
         {
-            await connectorService.Connect();
+            await connector.Connect();
         }
         catch (ConnectToServerFailException)
         {
