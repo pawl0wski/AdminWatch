@@ -1,12 +1,27 @@
+@using AdminWatchServer.Models
+@using AdminWatchServer.Services.Auth
+
+@inject IAuthService AuthService;
+
 <div class="app_header">
     <FluentIcon Value="@(new Icons.Regular.Size32.Eye())" Title="AdminWatch"/>
-    <h4 class="title">Admin Watch</h4>
+    <h4 class="title" style="width: 100%">Admin Watch</h4>
     @ChildContent
+    @if (_currentUser is not null)
+    {
+        <CurrentUser User="_currentUser" />
+    }
 </div>
 
 @code {
-
     [Parameter] 
     public required RenderFragment ChildContent { get; set; }
+
+    private AdminWatchUser? _currentUser;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _currentUser = await AuthService.GetLoggedInUser();
+    }
 
 }

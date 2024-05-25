@@ -1,6 +1,7 @@
 .adminwatch_nav {
     background-color: var(--neutral-layer-2);
     padding: 0.5rem 0;
-    height: calc(100vh - 4rem);
+    min-height: calc(100vh - 4rem);
+    height: 100%;
     width: 100%;
 }

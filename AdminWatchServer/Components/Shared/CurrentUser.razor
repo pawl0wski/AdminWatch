@@ -1,0 +1,19 @@
+@using AdminWatchServer.Models
+
+<FluentStack
+    Style="margin-right: 2rem"
+    Width="fit-content"
+    VerticalAlignment="VerticalAlignment.Center"
+    Orientation="Orientation.Horizontal">
+    <FluentPersona
+        Image="@(new Icons.Regular.Size16.Person().ToDataUri(size: "25px", color: "white"))"
+        ImageSize="2rem"/>
+    @User.UserName
+</FluentStack>
+
+@code {
+
+    [Parameter] 
+    public required AdminWatchUser User { get; set; }
+
+}

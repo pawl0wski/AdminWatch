@@ -12,7 +12,9 @@
 
 @implements IDisposable
 @inject IDevicesRepository DevicesRepository;
+@inject IDialogService DialogService;
 @inject IProcessessService ProcessesService;
+@inject NavigationManager Navigator;
 @layout DashboardLayout;
 
 @if (_device is not null)
@@ -50,9 +52,9 @@
 
     private List<DeviceProcess> _processes = [];
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await UpdateDevice();
+        _ = UpdateDevice();
         _deviceUpdater = new Timer(TimeSpan.FromSeconds(3));
         _deviceUpdater.Elapsed += OnDeviceUpdaterTick;
         _deviceUpdater.Start();
@@ -65,9 +67,23 @@
 
     private async Task UpdateDevice()
     {
-        _device = DevicesRepository.GetDevice(DeviceId);
-        _processes = await ProcessesService.GetProcessesForDevice(_device);
-        StateHasChanged();
+        try
+        {
+            _device = DevicesRepository.GetDevice(DeviceId);
+            _processes = await ProcessesService.GetProcessesForDevice(_device);
+            StateHasChanged();
+        }
+        catch (Exception)
+        {
+            await ShowErrorAndReturnBack();
+        }
+    }
+
+    private async Task ShowErrorAndReturnBack()
+    {
+        var dialog = await DialogService.ShowErrorAsync($"Połączenie z urządzeniem {_device?.Name} zostało utracone.","Utracono połączenie");
+        await dialog.Result;
+        Navigator.NavigateTo("/dashboard");
     }
 
     public void Dispose()

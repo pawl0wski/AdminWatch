@@ -23,5 +23,7 @@ public interface IAuthService
 
     public List<AdminWatchUser> GetAllUsers();
 
+    public Task<AdminWatchUser> GetLoggedInUser();
+    
     public Task<bool> IsSuperAdmin(AdminWatchUser user);
 }

@@ -92,6 +92,16 @@ public class AuthService(SignInManager<AdminWatchUser> signInManager, Authentica
         return signInManager.UserManager.Users.ToList();
     }
 
+    public async Task<AdminWatchUser> GetLoggedInUser()
+    {
+        var userData = signInManager.Context.User;
+        var user =  await signInManager.UserManager.GetUserAsync(userData);
+
+        if (user is null)
+            throw new NullReferenceException();
+        return user;
+    }
+
     public async Task<bool> IsSuperAdmin(AdminWatchUser user)
     {
         return await signInManager.UserManager.IsInRoleAsync(user, "SuperAdmin");
