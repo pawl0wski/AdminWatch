@@ -6,7 +6,6 @@
         @ref="_chart"
         Height="@("100%")"
         TItem="DeviceCpuUtilization"
-        XAxisType="XAxisType.Datetime"
         Options="_options"
         Title="Użycie CPU">
 
@@ -45,6 +44,11 @@
                 Max = 100
             }
         ];
+
+        _options.Xaxis = new XAxis
+        {
+            Labels = new XAxisLabels{Show = false}
+        };
 
         _options.Stroke = new Stroke
         {
