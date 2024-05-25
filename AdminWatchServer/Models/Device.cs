@@ -27,7 +27,7 @@ public class Device
         Connected
     }
 
-    public bool IsConnected()
+    public virtual bool IsConnected()
         => Status == DeviceStatus.Connected && ConnectionId is not null;
 
     public void Disconnect()

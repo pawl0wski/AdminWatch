@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWatchServer", "AdminWa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWatchClient", "AdminWatchClient\AdminWatchClient.csproj", "{20B4571E-A7D4-43BE-AE83-8F7407FCF5C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWatchServerTests", "AdminWatchServerTests\AdminWatchServerTests.csproj", "{22880C4C-765F-4D4C-9919-F1419140E82E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{20B4571E-A7D4-43BE-AE83-8F7407FCF5C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20B4571E-A7D4-43BE-AE83-8F7407FCF5C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20B4571E-A7D4-43BE-AE83-8F7407FCF5C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22880C4C-765F-4D4C-9919-F1419140E82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22880C4C-765F-4D4C-9919-F1419140E82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22880C4C-765F-4D4C-9919-F1419140E82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22880C4C-765F-4D4C-9919-F1419140E82E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

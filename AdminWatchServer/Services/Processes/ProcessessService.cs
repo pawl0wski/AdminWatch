@@ -34,6 +34,6 @@ public class ProcessesService(IHubContext<DevicesConnectorHub> devicesHub)
     private void CheckIfDeviceIsConnected(Device device)
     {
         if (!device.IsConnected())
-            throw new NullReferenceException("Device must be connected");
+            throw new Exception("Device must be connected");
     }
 }
