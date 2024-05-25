@@ -6,27 +6,27 @@
         <DeviceInfoMonitorEntry
             Title="System operacyjny"
             Content="@DeviceInfo.Os"
-            Icon="@(new Icons.Filled.Size20.Cube())"/>
+            Icon="@(new Icons.Regular.Size20.Cube())"/>
         <DeviceInfoMonitorEntry
             Title="Adres IP"
             Content="@DeviceInfo.Ip"
-            Icon="@(new Icons.Filled.Size20.PlugConnected())"/>
+            Icon="@(new Icons.Regular.Size20.PlugConnected())"/>
         <DeviceInfoMonitorEntry
             Title="Nazwa procesora"
             Content="@DeviceInfo.ProcessorName"
-            Icon="@(new Icons.Filled.Size20.DeveloperBoard())"/>
+            Icon="@(new Icons.Regular.Size20.DeveloperBoard())"/>
         <DeviceInfoMonitorEntry
             Title="Pamięć fizyczna"
             Content="@GetTotalMemory()"
-            Icon="@(new Icons.Filled.Size20.Ram())"/>        
+            Icon="@(new Icons.Regular.Size20.Ram())"/>        
         <DeviceInfoMonitorEntry
             Title="Producent"
             Content="@DeviceInfo.Manufacturer"
-            Icon="@(new Icons.Filled.Size20.Building())"/>        
+            Icon="@(new Icons.Regular.Size20.Building())"/>        
         <DeviceInfoMonitorEntry
             Title="Bateria"
             Content="@DeviceInfo.Battery.ToString()"
-            Icon="@(new Icons.Filled.Size20.Battery0())"/>
+            Icon="@(new Icons.Regular.Size20.Battery0())"/>
     </table>
 </FluentCard>
 

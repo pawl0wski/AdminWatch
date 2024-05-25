@@ -27,4 +27,5 @@ public class AuthServiceTest
         
         Assert.ThrowsAsync<Exception>( async ()  => await processesService.GetProcessesForDevice(_mockedDevice.Object));
     }
+
 }
