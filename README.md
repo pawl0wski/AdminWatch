@@ -2,7 +2,7 @@
 
 ## About
 Admin Watch is a project created as part of the Programming III course at university. \
-It's an application designed for remote user monitoring.
+It's an application designed for remote computers monitoring.
 
 ## Tech stack
 - .NET
