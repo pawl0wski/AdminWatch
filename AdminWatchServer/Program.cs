@@ -59,7 +59,17 @@ public class Program
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();
 
+        await DisconnectAllDevices(app);
+        
         await app.RunAsync();
+    }
+
+    private static async Task DisconnectAllDevices(IHost app)
+    {
+        using var scope = app.Services.CreateScope();
+        var devicesRepository = scope.ServiceProvider.GetRequiredService<IDevicesRepository>();
+
+        await devicesRepository.DisconnectAllDevices();
     }
 
     private static async Task CreateRoles(IHost app)

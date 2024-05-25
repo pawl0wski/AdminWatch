@@ -7,5 +7,6 @@ public interface IDevicesRepository
     public Device GetDevice(Guid deviceId);
     public List<Device> GetAllDevicesWithoutMeasures();
 
+    public Task DisconnectAllDevices();
 }
 

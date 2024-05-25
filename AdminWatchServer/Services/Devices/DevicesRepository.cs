@@ -16,4 +16,13 @@ public class DevicesRepository(AdminWatchContext context) : IDevicesRepository
         => context.Devices
             .Include(dev => dev.Info)
             .ToList();
+
+    public async Task DisconnectAllDevices()
+    {
+        var devices = GetAllDevicesWithoutMeasures();
+        foreach (var device in devices)
+            device.Disconnect();
+
+        await context.SaveChangesAsync();
+    }
 }
