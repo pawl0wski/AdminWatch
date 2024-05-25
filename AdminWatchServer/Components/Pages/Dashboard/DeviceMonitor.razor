@@ -3,13 +3,16 @@
 @using System.Timers
 @using AdminWatchServer.Services.Devices
 @using AdminWatchServer.Components.Shared.DeviceMonitor
+@using AdminWatchServer.DevicesConnector.Models
 @using AdminWatchServer.Models
+@using AdminWatchServer.Services.Processes
 @using Microsoft.AspNetCore.Authorization
 
 @attribute [Authorize]
 
 @implements IDisposable
 @inject IDevicesRepository DevicesRepository;
+@inject IProcessessService ProcessesService;
 @layout DashboardLayout;
 
 @if (_device is not null)
@@ -28,6 +31,11 @@
             <DeviceInfoMonitor 
                 DeviceInfo="_device.Info" />
         </FluentGridItem>
+        <FluentGridItem sm="12" md="6">
+            <DeviceProcessesList 
+                Processes="_processes"
+                />
+        </FluentGridItem>
     </FluentGrid>
 }
 
@@ -39,9 +47,11 @@
 
     private Timer? _deviceUpdater;
 
-    protected override void OnInitialized()
+    private List<DeviceProcess> _processes = [];
+
+    protected override async Task OnInitializedAsync()
     {
-        UpdateDevice();
+        await UpdateDevice();
         _deviceUpdater = new Timer(TimeSpan.FromSeconds(3));
         _deviceUpdater.Elapsed += OnDeviceUpdaterTick;
         _deviceUpdater.Start();
@@ -52,9 +62,10 @@
         await InvokeAsync(UpdateDevice);
     }
 
-    private void UpdateDevice()
+    private async Task UpdateDevice()
     {
         _device = DevicesRepository.GetDevice(DeviceId);
+        _processes = await ProcessesService.GetProcessesForDevice(_device);
         StateHasChanged();
     }
 

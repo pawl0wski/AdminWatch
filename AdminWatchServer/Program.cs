@@ -3,6 +3,7 @@ using AdminWatchServer.DevicesConnector;
 using AdminWatchServer.Models;
 using AdminWatchServer.Services.Auth;
 using AdminWatchServer.Services.Devices;
+using AdminWatchServer.Services.Processes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ public class Program
         ConfigureDatabase(ref builder);
 
         builder.Services.AddScoped<IDevicesRepository, DevicesRepository>();
+        builder.Services.AddScoped<IProcessessService, ProcessesService>();
 
         ConfigureAuthentication(ref builder);
 

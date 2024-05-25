@@ -1,6 +1,6 @@
 namespace AdminWatchClient.ServerConnector.Actions;
 
-public abstract class BaseMethodExecutor<TResult>
+public abstract class BaseMethodExecutor<TResponse, TRequest>
 {
-    public abstract TResult Execute();
+    public abstract TResponse Execute(TRequest request);
 }

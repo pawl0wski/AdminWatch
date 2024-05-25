@@ -32,7 +32,7 @@
     private void OnShutdownClick(Device device)
     {
         var deviceClient = Hub.Clients.Client(device.ConnectionId!);
-        deviceClient.SendAsync("ShutDown");
+        deviceClient.SendAsync("ShutDown", null);
     }
 
     private void OnMonitorRedirect(Device device)

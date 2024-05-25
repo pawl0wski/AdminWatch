@@ -1,0 +1,17 @@
+@using AdminWatchServer.DevicesConnector.Models
+
+<FluentCard >
+    <ul>
+        @foreach (var process in Processes)
+        {
+            <li>@process.Name</li>
+        }
+    </ul>
+</FluentCard>
+
+@code {
+
+    [Parameter] 
+    public required IEnumerable<DeviceProcess> Processes { get; set; }
+
+}
