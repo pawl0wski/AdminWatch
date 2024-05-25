@@ -22,3 +22,6 @@ It's an application designed for remote user monitoring.
 - Remote shutdown
 
 ## Screenshots
+![image](https://github.com/pawl0wski/AdminWatch/assets/59766830/d40d9967-8ec8-490f-8895-eec636ce9fd7)
+![image](https://github.com/pawl0wski/AdminWatch/assets/59766830/a4cb4dd9-48af-4daa-aad5-9764f06c347c)
+![image](https://github.com/pawl0wski/AdminWatch/assets/59766830/1f55d6ce-1603-4d7b-8947-3ea56836187e)
