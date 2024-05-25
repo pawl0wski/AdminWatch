@@ -2,27 +2,44 @@
 @rendermode InteractiveServer
 @using AdminWatchServer.Services.Auth
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
 
 @attribute [Authorize]
 @inject IAuthService AuthService;
 
 @layout DashboardLayout
 
-<h1 class="dashboard_title">Administratorzy</h1>
+<AuthorizeView Roles="SuperAdmin">
+    <Authorized>
+        <h1 class="dashboard_title">Administratorzy</h1>
 
-<FluentStack
-    Wrap="true"
-    Orientation="Orientation.Horizontal"
-    HorizontalGap="20"
-    VerticalGap="20">
-    @foreach (var user in AuthService.GetAllUsers())
-    {
-        <UserEntry User="user"
-                   ApproveUser="async () => await AuthService.ApproveUser(user)"
-                   UnApproveUser="async () => await AuthService.UnApproveUser(user)"
-                   DeleteUser="async () => { await AuthService.DeleteUser(user); StateHasChanged(); }"/>
-    }
-</FluentStack>
+        <FluentStack
+            Wrap="true"
+            Orientation="Orientation.Horizontal"
+            HorizontalGap="20"
+            VerticalGap="20">
+            @foreach (var user in AuthService.GetAllUsers())
+            {
+            <UserEntry User="user"
+                       ApproveUser="async () => await AuthService.ApproveUser(user)"
+                       UnApproveUser="async () => await AuthService.UnApproveUser(user)"
+                       DeleteUser="async () => { await AuthService.DeleteUser(user); StateHasChanged(); }"/>
+            }
+        </FluentStack> 
+    </Authorized>
+    <NotAuthorized>
+        <FluentStack
+            Style="width: 100%; height: 100%"
+            Orientation="Orientation.Vertical"
+            HorizontalAlignment="HorizontalAlignment.Center"
+            VerticalAlignment="VerticalAlignment.Center">
+            <FluentIcon Value="@(new Icons.Regular.Size48.LockClosed())" />
+            Musisz być Super Administratorem
+        </FluentStack>
+    </NotAuthorized>
+</AuthorizeView>
+
+
 
 @code {
 
