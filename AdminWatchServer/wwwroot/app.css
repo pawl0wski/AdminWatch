@@ -1,3 +1,13 @@
 h1.dashboard_title {
     margin-bottom: 2rem;
 }
+
+tr {
+    height: 2rem;
+}
+
+tr:not(:last-child) {
+    border-bottom-style: solid;
+    border-bottom-width: 1.5px;
+    border-bottom-color: lightgray;
+}

@@ -1,0 +1,30 @@
+@using AdminWatchServer.DevicesConnector.Models
+<tr>
+    <td >
+        <FluentStack
+            VerticalAlignment="VerticalAlignment.Center"
+            HorizontalAlignment="HorizontalAlignment.Center">
+            <FluentIcon Value="@(new Icons.Regular.Size20.Apps())"  />
+        </FluentStack>
+    </td>
+    <td style="width: 100%">
+        @Process.Name
+    </td>
+    <td>
+        <FluentButton
+            OnClick="() => OnProcessKill()"
+            IconStart="@(new Icons.Regular.Size20.Power())">
+            Zamknij
+        </FluentButton>
+    </td>
+</tr>
+
+@code {
+
+    [Parameter] 
+    public required DeviceProcess Process { get;set; }
+
+    [Parameter] 
+    public required Action OnProcessKill { get; set; }
+
+}

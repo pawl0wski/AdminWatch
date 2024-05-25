@@ -9,7 +9,6 @@ public class GetProcessesMethodExecutor
 {
     public override GetProcessesRespone Execute(object req)
     {
-        Console.WriteLine("GET PROCESSES!!!!!");
         var response = new GetProcessesRespone();
         var processes = Process.GetProcesses();
      

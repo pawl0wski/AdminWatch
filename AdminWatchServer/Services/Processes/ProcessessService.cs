@@ -24,7 +24,7 @@ public class ProcessesService(IHubContext<DevicesConnectorHub> devicesHub)
         CheckIfDeviceIsConnected(device);
 
         var deviceClient = GetDeviceClient(device);
-
+        
         return await deviceClient.InvokeAsync<bool>("KillProcess", process, cancellationToken ?? new CancellationToken());
     }
 

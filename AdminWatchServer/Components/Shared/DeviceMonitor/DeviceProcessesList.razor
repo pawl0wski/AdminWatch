@@ -1,17 +1,51 @@
 @using AdminWatchServer.DevicesConnector.Models
+@using AdminWatchServer.Models
+@using AdminWatchServer.Services.Processes
+
+@inject IProcessessService ProcessesService;
+@inject IToastService ToastService; 
 
 <FluentCard >
-    <ul>
-        @foreach (var process in Processes)
-        {
-            <li>@process.Name</li>
-        }
-    </ul>
+    <h4>Uruchomione procesy</h4>
+    <FluentSearch Style="margin-bottom: 1rem; width: 100%"
+        @bind-Value="_searchQuery"
+        @oninput="@(e => _searchQuery = e.Value?.ToString() ?? "")"
+         />
+    <div class="content" style="height: 20rem; overflow-y: scroll">
+        <table>
+            @foreach (var process in GetFilteredProcesses())
+            {
+                <DeviceProcessListEntry Process="process" OnProcessKill="() => KillProcess(process)"/>
+            }
+        </table>
+    </div>
 </FluentCard>
 
 @code {
 
     [Parameter] 
     public required IEnumerable<DeviceProcess> Processes { get; set; }
+
+    [Parameter]
+    public required Device Device { get; set; }
+
+    private string _searchQuery = "";
+
+    private IEnumerable<DeviceProcess> GetFilteredProcesses()
+        => Processes.Where(p => p.Name.ToLower().Contains(_searchQuery.ToLower()));
+
+    private async void KillProcess(DeviceProcess process)
+    {
+        var successfulyKilled = await ProcessesService.KillProcess(process, Device);
+
+        if (successfulyKilled)
+        {
+            ToastService.ShowSuccess($"Zamknięto proces o nazwie {process.Name}");
+        }
+        else
+        {
+            ToastService.ShowError($"Wystąpił problem z zamknięciem procesu {process.Name}");
+        }
+    }
 
 }
