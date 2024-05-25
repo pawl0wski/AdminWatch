@@ -4,6 +4,9 @@
 @using AdminWatchServer.Services.Devices
 @using AdminWatchServer.Components.Shared.DeviceMonitor
 @using AdminWatchServer.Models
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 @implements IDisposable
 @inject IDevicesRepository DevicesRepository;

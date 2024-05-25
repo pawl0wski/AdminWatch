@@ -1,11 +1,16 @@
 @page "/dashboard"
 @rendermode InteractiveServer
+@using AdminWatchServer.DevicesConnector
 @using AdminWatchServer.Models
 @using AdminWatchServer.Services.Devices
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.SignalR
+
 @attribute [Authorize]
+
 @inject IDevicesRepository DevicesRepository;
 @inject NavigationManager Navigator;
+@inject IHubContext<DevicesConnectorHub> Hub;
 
 @layout DashboardLayout
 
@@ -15,7 +20,7 @@
     @foreach (var device in DevicesRepository.GetAllDevicesWithoutMeasures())
     {
         <ConnectedDevice
-            OnShutdown="OnShutdownClick"
+            OnShutdown="@(() => OnShutdownClick(device))"
             OnEnterMonitor="@(() => OnMonitorRedirect(device))"
             Device="device" />
     }
@@ -24,9 +29,10 @@
 @code {
 
 
-    private void OnShutdownClick()
+    private void OnShutdownClick(Device device)
     {
-        Console.WriteLine("Hello!");
+        var deviceClient = Hub.Clients.Client(device.ConnectionId!);
+        deviceClient.SendAsync("ShutDown");
     }
 
     private void OnMonitorRedirect(Device device)
