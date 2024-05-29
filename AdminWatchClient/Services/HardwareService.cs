@@ -69,6 +69,9 @@ public class HardwareService : IHardwareService
     public int GetBatteryStatus()
     {
         _hardwareInfo.RefreshBatteryList();
+        if (_hardwareInfo.BatteryList.Count == 0)
+            return 0;
+        
         var battery = _hardwareInfo.BatteryList.First();
 
         return battery.EstimatedChargeRemaining;

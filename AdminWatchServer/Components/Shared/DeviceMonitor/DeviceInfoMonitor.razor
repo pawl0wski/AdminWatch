@@ -22,11 +22,14 @@
         <DeviceInfoMonitorEntry
             Title="Producent"
             Content="@DeviceInfo.Manufacturer"
-            Icon="@(new Icons.Regular.Size20.Building())"/>        
-        <DeviceInfoMonitorEntry
-            Title="Bateria"
-            Content="@DeviceInfo.Battery.ToString()"
-            Icon="@(new Icons.Regular.Size20.Battery0())"/>
+            Icon="@(new Icons.Regular.Size20.Building())"/>       
+        @if (DeviceInfo.Battery != 0)
+        {
+            <DeviceInfoMonitorEntry
+                Title="Bateria"
+                Content="@DeviceInfo.Battery.ToString()"
+                Icon="@(new Icons.Regular.Size20.Battery0())"/>
+        }
     </table>
 </FluentCard>
 
