@@ -10,6 +10,7 @@ public class DevicesRepository(AdminWatchContext context) : IDevicesRepository
             .Include(dev => dev.Info)
             .Include(dev => dev.CpuUtilizations)
             .Include(dev => dev.MemoryOccupies)
+            .AsSplitQuery()
             .First(dev => dev.Id == deviceId);
 
     public List<Device> GetAllDevicesWithoutMeasures()
