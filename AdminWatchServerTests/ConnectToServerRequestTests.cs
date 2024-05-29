@@ -15,6 +15,7 @@ public class ConnectToServerRequestTests
         };
 
         var createdDevice = req.CreateDevice();
+        
         Assert.Multiple(() =>
         {
             Assert.That(createdDevice.Name, Is.EqualTo("TestName"));
